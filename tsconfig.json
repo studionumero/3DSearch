@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "target": "es6",
+    "outDir": "dist",
+    "module": "commonjs",
+    "checkJs": true,
+    "declaration": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "inlineSources": true
+  },
+  "include": [
+    "src/*",
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

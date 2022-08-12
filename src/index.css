@@ -29,47 +29,14 @@ body {
   position: fixed;
   overflow: hidden;
   overscroll-behavior-y: none;
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir,
-    helvetica neue, helvetica, ubuntu, roboto, noto, segoe ui, arial, sans-serif;
+  font-family: Roboto, noto, segoe ui, arial, sans-serif;
   color: black;
   -webkit-font-smoothing: antialiased;
 }
 
-.logo {
-  font-size: 42px;
-  text-transform: uppercase;
-  font-weight: 700;
-  color: white;
-  font-family: 'Roboto';
-  user-select: none;
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-.form-control {
-  border-color: lightgray;
-  border-radius: 50px !important;
-  font-family: 'Roboto';
-  font-weight: 400;
-}
-
-.form-control:focus {
-  border-color: darkgray !important;
-  box-shadow: none !important;
-}
-
-.btn-flat {
-  background-color: #f8f9fa !important;
-  padding: 4px 8px !important;
-  color: #3c4043 !important;
-}
-
-.btn-flat:hover {
-  border-color: lightgray !important;
-}
-
-.btn-flat:focus {
-  background-color: white !important;
-  border-color: darkgray !important;
-  box-shadow: none !important;
-}
+input[type=search]::-ms-clear { display: none; width : 0; height: 0; }
+input[type=search]::-ms-reveal { display: none; width : 0; height: 0; }
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
