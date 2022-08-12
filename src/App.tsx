@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { useState, useEffect, ChangeEventHandler } from "react"
+import { useState, useEffect } from "react"
 import { useDrag } from "@use-gesture/react";
 import { useForm } from 'react-hook-form';
 
@@ -19,7 +19,7 @@ import { Canvas, useThree, useFrame, extend } from "@react-three/fiber";
 // styles
 import './index.css';
 
-// extend({ TextGeometry })
+
 
 // function Text({ position: initialPosition }) {
 //   // const { size, viewport } = useThree();
@@ -75,7 +75,9 @@ import './index.css';
 //   )
 // }
 
-function Box({ position: initialPosition }) {
+function Text({ position: initialPosition }) {
+  // extend({ TextGeometry })
+
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
@@ -98,7 +100,6 @@ function Box({ position: initialPosition }) {
   }, { pointerEvents: true });
 
   useFrame(() => {
-    // Sync cannon body position with three js
     const deltaX = Math.abs(body.position.x - position[0]);
     const deltaY = Math.abs(body.position.y - position[1]);
     const deltaZ = Math.abs(body.position.z - position[2]);
@@ -112,12 +113,16 @@ function Box({ position: initialPosition }) {
       setQuaternion(body.quaternion.toArray());
     }
   });
+
+  // const font = new FontLoader().parse('/fonts/Roboto.json');
+
   return (
     <mesh ref={ref} castShadow position={position} quaternion={quaternion} {...bind()}
       onClick={e => {
         e.stopPropagation();
       }}
     >
+      {/* <textGeometry attach="geometry" args={['A', { font, size: 1, height: 1 }]} /> */}
       <boxBufferGeometry attach="geometry" />
       <meshLambertMaterial attach="material" color="hotpink" />
     </mesh>
@@ -174,7 +179,7 @@ function DraggableDodecahedron({ position: initialPosition }) {
 }
 
 function Plane({ position }) {
-  const { ref } = useCannon({ bodyProps: { mass: 0 } }, (body: { addShape: (arg0: CANNON.Plane) => void; position: { set: (arg0: any) => void; }; }) => {
+  const { ref } = useCannon({ bodyProps: { mass: 0 } }, (body: { addShape; position; }) => {
     body.addShape(new CANNON.Plane())
     body.position.set(...position)
   })
@@ -221,33 +226,40 @@ const Scene = () => {
     setObjects([])
   };
 
-  const onChange = (e: any) => {
-    var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
-    vector.unproject(camera);
-    var dir = vector.sub(camera.position).normalize();
-    var distance = - camera.position.z / dir.z;
-    var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-    const position = [pos.x, pos.y, 2];
-    const randomPosition = [Math.random(), Math.random(), 2];
+  // only uppercase characters and numbers 0-9
+  const regex = /^[A-Z0-9]+$/;
 
-    setObjects([
-      ...objects,
-      <DraggableDodecahedron
-        position={position}
-        key={Math.random()}
-      />,
-      <Box
-        key={Math.random()}
-        position={randomPosition}
-      />
-    ]);
-  };
+  const handleChange = (e) => {
+    if (regex.test(e.target.value.toUpperCase().slice(-1)) == true) {
+      var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+      vector.unproject(camera);
+      var dir = vector.sub(camera.position).normalize();
+      var distance = - camera.position.z / dir.z;
+      var pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      const position = [pos.x, pos.y, 2];
+      const randomPosition = [Math.random(), Math.random(), 2];
+
+      setObjects([
+        ...objects,
+        <DraggableDodecahedron
+          position={position}
+          key={Math.random()}
+        />,
+        <Text
+          key={Math.random()}
+          position={randomPosition}
+        />
+      ]);
+    } else {
+      return null
+    }
+  }
 
   return (
     <>
       <CameraController />
       <Page
-        change={onChange}
+        change={handleChange}
         reset={onReset}
       />
       <ambientLight intensity={0.5} />
@@ -278,7 +290,8 @@ export default function App() {
         fov: 45
       }}
     >
-      <Scene />
+      <Scene
+      />
     </Canvas>
   )
 }
@@ -298,10 +311,13 @@ const Page = (props) => {
         className="flex flex-col gap-y-3"
       >
         <div className="flex flex-row rounded-3xl w-full h-10 bg-white px-3 py-1 items-center">
-          <span class="material-symbols-outlined" style={{ color: "#505050", fontSize: "22px" }}>search</span>
+          <span className="material-symbols-outlined" style={{ color: "#505050", fontSize: "22px" }}>search</span>
           <input {
             ...register('search',
-              { required: true })
+              {
+                required: true,
+                maxLength: 200
+              })
           }
             type="search"
             className="form-control
@@ -316,16 +332,17 @@ const Page = (props) => {
             id="search"
             placeholder="Search..."
             aria-label="Search"
+            maxLength={200}
             value={state.value}
-            onChange={props.change}
+            onChange={(e) => props.change(e)}
             autoComplete="off"
             spellCheck="false"
           />
-          <button onClick={props.reset} type="reset" value='reset' aria-label="clear">
-            <span class="material-symbols-outlined" style={{ color: "#505050", fontSize: "26px" }}>close</span>
+          <button id="clear" onClick={props.reset} type="reset" value='reset' aria-label="clear">
+            <span className="material-symbols-outlined" style={{ color: "#505050", fontSize: "26px" }}>close</span>
           </button>
         </div>
-        <div class="flex space-x-2 justify-center">
+        <div className="flex space-x-2 justify-center">
           <button
             type="submit"
             className="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
