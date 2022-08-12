@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as CANNON from 'cannon'
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
