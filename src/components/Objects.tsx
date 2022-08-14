@@ -4,16 +4,15 @@ import * as CANNON from "cannon";
 import { useCannon } from '../context/useCannon';
 import { useDrag } from "@use-gesture/react";
 // three
-import { useThree, useFrame } from "@react-three/fiber";
+import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // react
 import { useState } from "react"
+// font
+import Roboto from './Roboto.json'
 
-export function Text({ position: initialPosition }) {
-  // extend({ TextGeometry })
-
+export function Font({ position: initialPosition }) {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
@@ -50,7 +49,21 @@ export function Text({ position: initialPosition }) {
     }
   });
 
-  // const font = new FontLoader().parse('/fonts/Roboto.json');
+  const font = new FontLoader().parse(Roboto);
+  // configure font geometry
+  const textOptions = {
+    font,
+    size: 1,
+    height: 0,
+    curveSegments: 5,
+    bevelEnabled: true,
+    bevelThickness: 0.3,
+    bevelSize: 0.2,
+    bevelOffset: 0,
+    bevelSegments: 5
+  };
+  // extend TextGeometry to THREE
+  extend({ TextGeometry })
 
   return (
     <mesh ref={ref} castShadow position={position} quaternion={quaternion} {...bind()}
@@ -58,11 +71,10 @@ export function Text({ position: initialPosition }) {
         e.stopPropagation();
       }}
     >
-      {/* <textGeometry attach="geometry" args={['A', { font, size: 1, height: 1 }]} /> */}
-      <boxBufferGeometry attach="geometry" />
-      <meshLambertMaterial attach="material" color="hotpink" />
+      <textGeometry attach='geometry' args={['A', textOptions]} />
+      <meshLambertMaterial attach='material' color="hotpink" />
     </mesh>
-  )
+  );
 }
 
 export function Dodecahedron({ position: initialPosition }) {
