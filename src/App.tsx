@@ -90,11 +90,17 @@ export default function App() {
         reset={onReset}
         myKey={key}
       />
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={0.4} />
       <directionalLight
-        position={[10, 10, 10]}
+        position={[0, 5, 15]}
         castShadow
-        shadow-mapSize={[2048, 2048]}
+        shadow-mapSize={[4096, 4096]}
+        shadow-camera-near={0.1}
+        shadow-camera-far={20}
+        shadow-camera-left={-15}
+        shadow-camera-right={15}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
       />
       <Provider>
         <Objects

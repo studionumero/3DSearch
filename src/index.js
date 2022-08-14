@@ -13,7 +13,7 @@ root.render(
       shadows
       dpr={[1, 2]}
       gl={{ alpha: false }}
-      camera={{ position: [-1, -1, 10], fov: 45 }}
+      camera={{ position: [0, 0, 10], fov: 45 }}
     >
       <App />
     </Canvas>
