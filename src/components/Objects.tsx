@@ -72,7 +72,7 @@ export function Font({ position: initialPosition }) {
       }}
     >
       <textGeometry attach='geometry' args={['A', textOptions]} />
-      <meshLambertMaterial attach='material' color="hotpink" />
+      <meshLambertMaterial attach='material' color="lightcoral" />
     </mesh>
   );
 }

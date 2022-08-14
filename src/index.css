@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -46,12 +46,15 @@ form input:placeholder-shown + #clear {
   pointer-events: none;
 }
 
-.material-fill {
-  font-variation-settings:
-  'FILL' 1,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48;
+.material-fill, .material-fill-active {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
   font-size: 36px;
+}
+
+.material-fill {
+  color: #D4E3E6;
+}
+
+.material-fill-active {
   color: white;
 }
