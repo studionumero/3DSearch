@@ -13,7 +13,7 @@ import { useState } from "react"
 // font
 import Roboto from './Roboto.json'
 
-export function Font({ position: initialPosition }) {
+export function Font({ letter, position: initialPosition }) {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
@@ -21,7 +21,7 @@ export function Font({ position: initialPosition }) {
 
   const font = new FontLoader().parse(Roboto);
   const letterGeom = new TextGeometry(
-    'A',
+    letter,
     {
       font,
       size: 1,
@@ -94,7 +94,7 @@ export function Font({ position: initialPosition }) {
         e.stopPropagation();
       }}
     >
-      <textGeometry attach='geometry' args={['A', textOptions]} />
+      <textGeometry attach='geometry' args={[letter, textOptions]} />
       <meshLambertMaterial attach='material' color="lightcoral" />
     </mesh>
   );

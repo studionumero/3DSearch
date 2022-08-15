@@ -6,12 +6,14 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { Html as HTML } from "@react-three/drei";
 
 export default function Home(props) {
-  const [state, setState] = useState('');
   const [about, setAbout] = useState(false);
   const [log, setLog] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const { register, handleSubmit } = useForm({
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+    delayError: 0,
+  });
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }} >
@@ -33,13 +35,15 @@ export default function Home(props) {
         <section className="flex grow" />
         <section className="flex flex-col w-[526px] h-min self-center justify-self-center">
           <div className="flex flex-row items-center self-center mr-[45px] text-[64px] leading-[83px] font-mono text-center uppercase font-semibold tracking-normal mb-4 select-none">
-            <img src={process.env.PUBLIC_URL + '/favicon.svg'} style={{ margin: "0 30px -16px 0" }} alt="3D Logo" /> 
+            <img src={process.env.PUBLIC_URL + '/favicon.svg'} style={{ margin: "0 30px -16px 0" }} alt="3D Logo" />
             <span className='text-[#F25479]'>3d</span>
             <span className='text-white'>Search</span>
           </div>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit}
             className="flex flex-col gap-y-6"
+            method="get"
+            action="https://www.google.com/search"
           >
             <SearchBar>
               <InputIcon icon="search" fontSize="22px" />
@@ -57,12 +61,12 @@ export default function Home(props) {
                   px-3 py-1.5 m-0
                   text-base font-normal text-gray-700
                   outline-none"
+                name="q"
                 id="search"
+                role="search"
                 placeholder=""
                 aria-label="Search"
                 maxLength={200}
-                value={state.value}
-                onChange={(e) => props.change(e)}
                 onKeyDown={(e) => props.myKey(e)}
                 autoComplete="off"
                 spellCheck="false"

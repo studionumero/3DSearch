@@ -15,65 +15,40 @@ import { useState } from "react"
 import './index.css';
 
 export default function App() {
-  const [objects, setObjects] = useState([
-    // <Font position={[0, 0, 0]} key={Math.random()} />
-  ]);
-
+  const [objects, setObjects] = useState([]);
   const { mouse, camera } = useThree();
 
   const onReset = () => {
     setObjects([])
   };
 
-  function handleKeyDown(event) {
-    console.log('User pressed: ', event.key);
-
-    // console.log(message);
-
-    if (event.key === 'Backspace') {
-      console.log('Backspace key pressed ✅');
-      return true;
-
-    }
-  };
-
   const key = (e) => {
-
-    // create map for keycodes 48 through 90
-    //     if (e.keyCode === 65 ) {
-    //       console.log('a')
-    //     }
-    // }
-
-    for (let i = 48; i <= 90; i++) {
-      if (e.keyCode === i) {
-        console.log(e.key);
-        return true;
+    if (e.keyCode >= 48 && e.keyCode <= 90) {
+      var str = '';
+      for (const [p, val] of Object.entries(e.key)) {
+        str += `${p}:${val}\n`;
       }
-    }
-  }
-
-  // only uppercase characters and numbers 0-9
-  const regex = /^[A-Z0-9]+$/;
-
-  const handleChange = (e) => {
-    // get last character of string, convert to uppercase, test against regex
-    // if (key == true) {
-    //   return null;
-    // } else
-    if (regex.test(e.target.value.toUpperCase().slice(-1)) === true) {
+      console.log(str.split(":").pop());
+      var keyVal = str.split(":").pop().toUpperCase();
       var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
       vector.unproject(camera);
       var dir = vector.sub(camera.position).normalize();
       var distance = - camera.position.z / dir.z;
       var pos = camera.position.clone().add(dir.multiplyScalar(distance));
       const position = [pos.x / 4, pos.y / 8, 2];
-      // const randomPosition = [Math.random(), Math.random(), 2];
+      const randomPosition = [Math.random(), Math.random(), 2];
+
+      // working: A, X, Y, Z, M, N, H, L, I, T, F, V, W, E, K
+      // working: 7, 4, 1
+
+      // not working: B, R, Q, U, O, P, S, D, G, J, C, B
+      // not working: 2, 3, 5, 6, 8, 9, 0
 
       setObjects([
         ...objects,
         <Font
-          position={position}
+          position={randomPosition}
+          letter={keyVal}
           key={Math.random()}
         />
       ]);
@@ -81,12 +56,9 @@ export default function App() {
       return null
     }
   }
-
   return (
     <>
       <Home
-        change={handleChange}
-        handleKeyDown={handleKeyDown}
         reset={onReset}
         myKey={key}
       />
