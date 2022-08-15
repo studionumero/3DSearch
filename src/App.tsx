@@ -4,7 +4,7 @@ import { Provider } from './context/useCannon';
 // pages
 import Home from "./pages/Home";
 // components
-import { Dodecahedron, Font } from "./components/Objects";
+import { Font } from "./components/Objects";
 import Plane from "./components/Plane";
 // three
 import * as THREE from 'three';
@@ -108,7 +108,7 @@ export default function App() {
           addObject={undefined}
         />
         <Plane
-          position={[0, 0, -2]}
+          position={[0, 0, -2.2]}
         />
       </Provider>
     </>

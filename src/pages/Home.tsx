@@ -5,7 +5,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 // three
 import { Html as HTML } from "@react-three/drei";
 
-export default function Home(props, { key }) {
+export default function Home(props) {
   const [state, setState] = useState('');
   const [about, setAbout] = useState(false);
   const [log, setLog] = useState(false);
@@ -13,14 +13,8 @@ export default function Home(props, { key }) {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data: any) => console.log(data);
 
-  //   function key(e) {
-  //     if (e.keyCode === 8) {
-  //         console.log('delete');
-  //     }
-  // }
-
   return (
-    <HTML center style={{ display: "flex", flexDirection: "column", position: "absolute", margin: "0", padding: "0", alignItems: "center", width: "100vw", height: "100vh", inset: "0", top: "0px" }}>
+    <HTML center style={{ width: "100vw", height: "100vh" }} >
       <main className="flex flex-col w-full h-full p-2">
         <section className="absolute right-0 top-0 h-full">
           <NavBar
@@ -39,11 +33,7 @@ export default function Home(props, { key }) {
         <section className="flex grow" />
         <section className="flex flex-col w-[526px] h-min self-center justify-self-center">
           <div className="flex flex-row items-center self-center mr-[45px] text-[64px] leading-[83px] font-mono text-center uppercase font-semibold tracking-normal mb-4 select-none">
-            <svg style={{ margin: "0 30px -16px 0" }} width="56" height="62" viewBox="0 0 56 62" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M52.6359 14.1645L27.7128 0L2.90813 14.0972L27.995 27.0618L52.6359 14.1645Z" fill="#F25479" />
-              <path d="M55.4256 17.7835L30.2545 30.9583V61.5555L55.4256 47.25V17.7835Z" fill="#F25479" />
-              <path d="M25.7545 61.8871V30.9694L0 17.6597V47.25L25.7545 61.8871Z" fill="#F25479" />
-            </svg>
+            <img src={process.env.PUBLIC_URL + '/favicon.svg'} style={{ margin: "0 30px -16px 0" }} alt="3D Logo" /> 
             <span className='text-[#F25479]'>3d</span>
             <span className='text-white'>Search</span>
           </div>
@@ -68,7 +58,7 @@ export default function Home(props, { key }) {
                   text-base font-normal text-gray-700
                   outline-none"
                 id="search"
-                placeholder="Search..."
+                placeholder=""
                 aria-label="Search"
                 maxLength={200}
                 value={state.value}
@@ -77,12 +67,12 @@ export default function Home(props, { key }) {
                 autoComplete="off"
                 spellCheck="false"
               />
-              <button 
-                id="clear" 
-                onClick={props.reset} 
-                type="reset" 
+              <button
+                id="clear"
+                onClick={props.reset}
+                type="reset"
                 value="reset"
-                aria-label="clear" 
+                aria-label="clear"
                 style={{ height: "24px" }}
               >
                 <InputIcon icon="close" fontSize="24px" />
@@ -90,7 +80,7 @@ export default function Home(props, { key }) {
             </SearchBar>
           </form>
         </section>
-        <section className="flex grow" />
+        <section className="flex grow-[2]" />
       </main>
     </HTML>
   )
@@ -129,7 +119,7 @@ const About = () => (
     top="15px"
   >
     <span className="text-[#415D6C]">
-      This project was created using JavaScript, React.js, Three.js, and Cannon.js. The purpose of this project was to experiment with the 3D and physics libraries of Three and Cannon.
+      This project was created using JavaScript, React.js, Three.js, and Cannon.js. The purpose of this project was to experiment with the 3D and physics libraries of Three and Cannon as well as to create something fun and interactive.
     </span>
   </SideBar>
 );
