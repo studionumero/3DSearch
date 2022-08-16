@@ -684,6 +684,10 @@ video {
   justify-self: center;
 }
 
+.whitespace-pre-wrap {
+  white-space: pre-wrap;
+}
+
 .rounded-sm {
   border-radius: 1px;
 }

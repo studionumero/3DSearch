@@ -18,32 +18,38 @@ export function Font({ letter, position: initialPosition }) {
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
-
   const font = new FontLoader().parse(Roboto);
-  const letterGeom = new TextGeometry(
+
+  const textOptions = {
+    font,
+    size: 1,
+    height: 0.001,
+    curveSegments: 8,
+    bevelEnabled: true,
+    bevelThickness: 0.3,
+    bevelSize: 0.1,
+    bevelOffset: -0.01,
+    bevelSegments: 12
+  };
+
+  const letterGeometry = new TextGeometry(
     letter,
-    {
-      font,
-      size: 1,
-      height: 0,
-      curveSegments: 0,
-      bevelEnabled: true,
-      bevelThickness: 0.3,
-      bevelSize: 0.1,
-      bevelOffset: -0.01,
-      bevelSegments: 12
-    }
-  )
+    textOptions
+  );
 
-  letterGeom.computeBoundingBox();
-  letterGeom.computeBoundingSphere();
+  letterGeometry.computeBoundingSphere();
+  letterGeometry.computeBoundingBox();
 
-  const letterMat = new THREE.MeshLambertMaterial();
-  const letterMesh = new THREE.Mesh(letterGeom, letterMat);
+  const letterMaterial = new THREE.MeshLambertMaterial();
+  const letterMesh = new THREE.Mesh(letterGeometry, letterMaterial);
   letterMesh.size = letterMesh.geometry.boundingBox.getSize(new THREE.Vector3());
 
-  const { ref, body } = useCannon({ bodyProps: { mass: 100000 } }, body => {
-    body.addShape(new CANNON.Box(new CANNON.Vec3().copy(letterMesh.size).scale(0.5)))
+  const box = new CANNON.Box(new CANNON.Vec3().copy(letterMesh.size).scale(0.5));
+
+  const { center } = letterMesh.geometry.boundingSphere;
+
+  const { ref, body } = useCannon({ bodyProps: { mass: 100 } }, body => {
+    body.addShape(box, new CANNON.Vec3(center.x, center.y, center.z));
     body.position.set(...position);
   }, []);
 
@@ -73,18 +79,6 @@ export function Font({ letter, position: initialPosition }) {
     }
   });
 
-  // configure font geometry
-  const textOptions = {
-    font,
-    size: 1,
-    height: 0,
-    curveSegments: 0,
-    bevelEnabled: true,
-    bevelThickness: 0.3,
-    bevelSize: 0.1,
-    bevelOffset: -0.01,
-    bevelSegments: 12
-  };
   // extend TextGeometry to THREE
   extend({ TextGeometry })
 

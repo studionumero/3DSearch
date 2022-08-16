@@ -4,7 +4,7 @@ import { Provider } from './context/useCannon';
 // pages
 import Home from "./pages/Home";
 // components
-import { Font } from "./components/Objects";
+import { Font } from "./components/Text";
 import Plane from "./components/Plane";
 // three
 import * as THREE from 'three';
@@ -25,24 +25,22 @@ export default function App() {
   const key = (e) => {
     if (e.keyCode >= 48 && e.keyCode <= 90) {
       var str = '';
+      // parses event object and returns string
       for (const [p, val] of Object.entries(e.key)) {
         str += `${p}:${val}\n`;
       }
-      console.log(str.split(":").pop());
+      // returns letter in array, converts to uppercase
       var keyVal = str.split(":").pop().toUpperCase();
       var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
       vector.unproject(camera);
       var dir = vector.sub(camera.position).normalize();
       var distance = - camera.position.z / dir.z;
       var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      const position = [pos.x / 4, pos.y / 8, 2];
-      const randomPosition = [Math.random(), Math.random(), 2];
-
-      // working: A, X, Y, Z, M, N, H, L, I, T, F, V, W, E, K
-      // working: 7, 4, 1
-
-      // not working: B, R, Q, U, O, P, S, D, G, J, C, B
-      // not working: 2, 3, 5, 6, 8, 9, 0
+      console.log(pos)
+      let max = 15;
+      let min = -15;
+      var coordVal = Math.floor(Math.random() * (max - min + 1) ) + min;
+      const randomPosition = [coordVal / 4, coordVal / 8, 2];
 
       setObjects([
         ...objects,

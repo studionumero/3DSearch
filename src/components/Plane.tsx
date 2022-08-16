@@ -10,7 +10,7 @@ export default function Plane({ position }) {
   })
   return (
     <mesh ref={ref} receiveShadow position={position}>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
+      <planeBufferGeometry attach="geometry" args={[1000, 1000, 1000, 1000]} />
       <meshPhongMaterial attach="material" color="#6E9BA6" />
     </mesh>
   )

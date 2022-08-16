@@ -122,8 +122,10 @@ const About = () => (
     title="About"
     top="15px"
   >
-    <span className="text-[#415D6C]">
-      This project was created using JavaScript, React.js, Three.js, and Cannon.js. The purpose of this project was to experiment with the 3D and physics libraries of Three and Cannon as well as to create something fun and interactive.
+    <span className="text-[#415D6C] whitespace-pre-wrap">
+      This project was created using React.js, Three.js, Cannon.js, JavaScript and the React-Three libraries of Drei, Cannon, and Three. <br/><br/>
+      The purpose of this project was to experiment and create a fun, and interactive app.<br/><br/>
+      3DSearch currently works with the English alphabet and Arabic numerals with the possibility to support other languages in the near future.
     </span>
   </SideBar>
 );
@@ -135,16 +137,12 @@ const Log = () => (
   >
     <ul>
       <LogList
-        date="08/13/22"
-        description="Added expandable folders to homepage."
+        date="08/14/22"
+        description="Fixed lighting, adjusted physics and corrected object clipping errors."
       />
       <LogList
-        date="08/13/22"
-        description="Added expandable folders to homepage."
-      />
-      <LogList
-        date="08/13/22"
-        description="Added expandable folders to homepage."
+        date="08/16/22"
+        description="Corrected geometry error, increased gravity, and added randomization of object coordinates."
       />
     </ul>
   </SideBar>
