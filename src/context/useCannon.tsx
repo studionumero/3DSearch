@@ -12,17 +12,17 @@ export function Provider({ children }) {
     useEffect(() => {
         world.broadphase = new CANNON.NaiveBroadphase()
         world.solver.iterations = 10
-        world.gravity.set(0, 0, -16.87)
+        world.gravity.set(0, 0, -9.87)
     }, [world])
 
     // Run world stepper every frame
-    useFrame(() => world.step(1 / 60))
+    useFrame(() => world.step(1 / 30))
     // Distribute world via context
     return <context.Provider value={world} children={children} />
 }
 
 // Custom hook to maintain a world physics body
-export function useCannon({ bodyProps: { ...props } }, fn, deps = []) {
+export function useCannon({ bodyProps: { ...props } }, fn) {
     const ref = useRef()
     // Get cannon world object
     const world = useContext(context)
@@ -35,7 +35,7 @@ export function useCannon({ bodyProps: { ...props } }, fn, deps = []) {
         world.addBody(body)
         // Remove body on unmount
         return () => world.removeBody(body)
-    }, deps)
+    }, [])
 
     useFrame(() => {
         if (ref.current) {

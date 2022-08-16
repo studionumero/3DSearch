@@ -33,9 +33,26 @@ export default function Home(props) {
           </OutsideClickHandler>
         </section>
         <section className="flex grow" />
-        <section className="flex flex-col w-[526px] h-min self-center justify-self-center">
-          <div className="flex flex-row items-center self-center mr-[45px] text-[64px] leading-[83px] font-mono text-center uppercase font-semibold tracking-normal mb-4 select-none">
-            <img src={process.env.PUBLIC_URL + '/favicon.svg'} style={{ margin: "0 30px -16px 0" }} alt="3D Logo" />
+        <section className="flex flex-col 
+          w-[300px] sm:w-[400px] md:w-[526px] 
+          h-min 
+          self-center justify-self-center"
+        >
+          <div className="flex flex-row 
+            items-center self-center 
+            mr-[20px] sm:mr-[20px] md:mr-[45px] 
+            text-[36px] sm:text-[48px] md:text-[64px] 
+            sm:leading-[58px] md:leading-[83px] 
+            font-mono text-center uppercase font-semibold tracking-normal 
+            mb-4 select-none"
+          >
+            <img 
+              src={process.env.PUBLIC_URL + '/favicon.svg'} 
+              className="h-[36px] sm:h-[48px] md:h-[64px] 
+              sm:mr-[10px] mr-[10px] mb-[-4px] 
+              sm:mb-[-8px] md:mr-[30px] md:mb-[-16px]" 
+              alt="3D Logo" 
+            />
             <span className='text-[#F25479]'>3d</span>
             <span className='text-white'>Search</span>
           </div>
@@ -72,10 +89,8 @@ export default function Home(props) {
                 spellCheck="false"
               />
               <button
-                id="clear"
                 onClick={props.reset}
                 type="reset"
-                value="reset"
                 aria-label="clear"
                 style={{ height: "24px" }}
               >
@@ -93,10 +108,10 @@ export default function Home(props) {
 const NavBar = ({ about, setAbout, log, setLog }) => (
   <nav className="relative flex flex-row justify-end py-1.5 px-3 mt-[1px]">
     <section className="flex flex-col gap-1.5">
-      <button onClick={() => setAbout(!about)}>
+      <button onClick={() => setAbout(!about)} className="hidden sm:block">
         {log ? <span className="material-symbols-sharp material-fill">article</span> : <span className="material-symbols-sharp material-fill-active">article</span>}
       </button>
-      <button onClick={() => setLog(!log)}>
+      <button onClick={() => setLog(!log)} className="hidden sm:block">
         {about ? <span className="material-symbols-sharp material-fill">check_box</span> : <span className="material-symbols-sharp material-fill-active">check_box</span>}
       </button>
       <a href="https://github.com/glennphil/3d-search" alt="github code" target="_blank" rel="noreferrer">

@@ -36,16 +36,18 @@ export default function App() {
       var dir = vector.sub(camera.position).normalize();
       var distance = - camera.position.z / dir.z;
       var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      console.log(pos)
-      let max = 15;
-      let min = -15;
-      var coordVal = Math.floor(Math.random() * (max - min + 1) ) + min;
-      const randomPosition = [coordVal / 4, coordVal / 8, 2];
+      var Xmax = pos.x * 8;
+      var Xmin = pos.x * -8;
+      var Ymax = pos.y * 4;
+      var Ymin = pos.y * -4;
+      var XcoordVal = Math.floor(Math.random() * (Xmax - Xmin + 1) ) + Xmin;
+      var YcoordVal = Math.floor(Math.random() * (Ymax - Ymin + 1) ) + Ymin;
+      const position = [XcoordVal / 4, YcoordVal / 8, 2];
 
       setObjects([
         ...objects,
         <Font
-          position={randomPosition}
+          position={position}
           letter={keyVal}
           key={Math.random()}
         />
