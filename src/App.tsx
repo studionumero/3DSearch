@@ -23,7 +23,7 @@ export default function App() {
   };
 
   const key = (e) => {
-    if (e.keyCode >= 48 && e.keyCode <= 90) {
+    if (e.keyCode >= 48 && e.keyCode <= 90 || (e.keyCode >= 96 && e.keyCode <= 105)) {
       var str = '';
       // parses event object and returns string
       for (const [p, val] of Object.entries(e.key)) {
