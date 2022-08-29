@@ -36,10 +36,10 @@ export default function App() {
       var dir = vector.sub(camera.position).normalize();
       var distance = - camera.position.z / dir.z;
       var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      var Xmax = pos.x * 8;
-      var Xmin = pos.x * -8;
-      var Ymax = pos.y * 4;
-      var Ymin = pos.y * -4;
+      var Xmax = pos.x * 4;
+      var Xmin = pos.x * -4;
+      var Ymax = pos.y * 2;
+      var Ymin = pos.y * -2;
       var XcoordVal = Math.floor(Math.random() * (Xmax - Xmin + 1) ) + Xmin;
       var YcoordVal = Math.floor(Math.random() * (Ymax - Ymin + 1) ) + Ymin;
       const position = [XcoordVal / 4, YcoordVal / 8, 2];

@@ -24,12 +24,12 @@ export function Font({ letter, position: initialPosition }) {
     font,
     size: 1,
     height: 0.2,
-    curveSegments: 8,
+    curveSegments: 4,
     bevelEnabled: true,
     bevelThickness: 0.2,
     bevelSize: 0.1,
     bevelOffset: -0.01,
-    bevelSegments: 12
+    bevelSegments: 6
   };
 
   const letterGeometry = new TextGeometry(

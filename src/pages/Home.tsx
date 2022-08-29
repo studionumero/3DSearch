@@ -159,6 +159,10 @@ const Log = () => (
         date="08/16/22"
         description="Corrected geometry error, increased gravity, and added randomization of object coordinates."
       />
+      <LogList
+        date="08/29/22"
+        description="Improved performance by decreasing geometry curves and spread radius of objects."
+      />
     </ul>
   </SideBar>
 );
