@@ -9,16 +9,32 @@ import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 // react
-import { useState } from "react"
+import { useState } from "react";
 // font
-import Roboto from './Roboto.json'
+import Roboto from './fonts/Roboto.json';
+import ComicNeue from './fonts/ComicNeue.json';
+import Newsreader from './fonts/Newsreader.json';
 
 export function Font({ letter, position: initialPosition }) {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
-  const font = new FontLoader().parse(Roboto);
+
+  const fontType = JSON.parse(localStorage.getItem("fontType"));
+  // const fontSize = JSON.parse(localStorage.getItem("fontSize"));
+  
+  function fontCheck() {
+    if (fontType === "Roboto") {
+      return Roboto;
+    } else if (fontType === "ComicNeue") {
+      return ComicNeue;
+    } else if (fontType === "Newsreader") {
+      return Newsreader;
+    }
+  }
+
+  const font = new FontLoader().parse(fontCheck());
 
   const textOptions = {
     font,
@@ -89,7 +105,7 @@ export function Font({ letter, position: initialPosition }) {
       }}
     >
       <textGeometry attach='geometry' args={[letter, textOptions]} />
-      <meshLambertMaterial attach='material' color="lightcoral" />
+      <meshLambertMaterial attach='material' color={'lightCoral'} />
     </mesh>
   );
 }
