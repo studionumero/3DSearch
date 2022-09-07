@@ -2,28 +2,34 @@
 // cannon
 import * as CANNON from "cannon";
 import * as THREE from "three";
-import { useCannon } from '../context/useCannon';
+import { useCannon } from "../context/useCannon";
 import { useDrag } from "@use-gesture/react";
 // three
 import { useThree, useFrame, extend } from "@react-three/fiber";
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 // react
 import { useState } from "react";
 // font
-import Roboto from './fonts/Roboto.json';
-import ComicNeue from './fonts/ComicNeue.json';
-import Newsreader from './fonts/Newsreader.json';
+import Roboto from "./fonts/Roboto.json";
+import ComicNeue from "./fonts/ComicNeue.json";
+import Newsreader from "./fonts/Newsreader.json";
 
-export function Font({ letter, position: initialPosition }) {
+export function Font({
+  fontType,
+  fontBevel,
+  fontBevelSize,
+  fontThickness,
+  fontSize,
+  letter,
+  textColor,
+  position: initialPosition,
+}) {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 
-  const fontType = JSON.parse(localStorage.getItem("fontType"));
-  // const fontSize = JSON.parse(localStorage.getItem("fontSize"));
-  
   function fontCheck() {
     if (fontType === "Roboto") {
       return Roboto;
@@ -34,51 +40,87 @@ export function Font({ letter, position: initialPosition }) {
     }
   }
 
+  function bevelThickness() {
+    if (fontBevel === true) {
+      return 0.2;
+    } else return 0;
+  }
+
+  function bevelSize() {
+    if (fontBevel === true) {
+      return fontBevelSize;
+    } else return 0;
+  }
+
+  function bevelOffset() {
+    if (fontBevel === true) {
+      return -0.01;
+    } else return 0;
+  }
+
+  function bevelSegments() {
+    if (fontBevel === true) {
+      return 6;
+    } else return 0;
+  }
+
   const font = new FontLoader().parse(fontCheck());
 
   const textOptions = {
     font,
-    size: 1,
-    height: 0.2,
+    size: fontSize,
+    height: fontThickness,
     curveSegments: 4,
-    bevelEnabled: true,
-    bevelThickness: 0.2,
-    bevelSize: 0.1,
-    bevelOffset: -0.01,
-    bevelSegments: 6
+    bevelEnabled: fontBevel,
+    bevelThickness: bevelThickness(),
+    bevelSize: bevelSize(),
+    bevelOffset: bevelOffset(),
+    bevelSegments: bevelSegments(),
   };
 
-  const letterGeometry = new TextGeometry(
-    letter,
-    textOptions
-  );
+  const letterGeometry = new TextGeometry(letter, textOptions);
 
   letterGeometry.computeBoundingSphere();
   letterGeometry.computeBoundingBox();
 
   const letterMaterial = new THREE.MeshLambertMaterial();
   const letterMesh = new THREE.Mesh(letterGeometry, letterMaterial);
-  letterMesh.size = letterMesh.geometry.boundingBox.getSize(new THREE.Vector3());
+  letterMesh.size = letterMesh.geometry.boundingBox.getSize(
+    new THREE.Vector3()
+  );
 
-  const box = new CANNON.Box(new CANNON.Vec3().copy(letterMesh.size).scale(0.5));
+  const box = new CANNON.Box(
+    new CANNON.Vec3().copy(letterMesh.size).scale(0.5)
+  );
 
   const { center } = letterMesh.geometry.boundingSphere;
 
-  const { ref, body } = useCannon({ bodyProps: { mass: 100 } }, body => {
-    body.addShape(box, new CANNON.Vec3(center.x, center.y, center.z));
-    body.position.set(...position);
-  }, []);
+  const { ref, body } = useCannon(
+    { bodyProps: { mass: 100 } },
+    (body) => {
+      body.addShape(box, new CANNON.Vec3(center.x, center.y, center.z));
+      body.position.set(...position);
+    },
+    []
+  );
 
-  const bind = useDrag(({ offset: [,], xy: [x, y], first, last }) => {
-    if (first) {
-      body.mass = 0;
-      body.updateMassProperties();
-    } else if (last) {
-      body.mass = 10000;
-      body.updateMassProperties();
-    }
-    body.position.set((x - size.width / 2) / aspect, -(y - size.height / 2) / aspect, -0.7);
-  }, { pointerEvents: true });
+  const bind = useDrag(
+    ({ offset: [,], xy: [x, y], first, last }) => {
+      if (first) {
+        body.mass = 0;
+        body.updateMassProperties();
+      } else if (last) {
+        body.mass = 10000;
+        body.updateMassProperties();
+      }
+      body.position.set(
+        (x - size.width / 2) / aspect,
+        -(y - size.height / 2) / aspect,
+        -0.7
+      );
+    },
+    { pointerEvents: true }
+  );
 
   useFrame(() => {
     const deltaX = Math.abs(body.position.x - position[0]);
@@ -88,7 +130,8 @@ export function Font({ letter, position: initialPosition }) {
       setPosition(body.position.clone().toArray());
     }
     const bodyQuaternion = body.quaternion.toArray();
-    const quaternionDelta = bodyQuaternion.map((n, idx) => Math.abs(n - quaternion[idx]))
+    const quaternionDelta = bodyQuaternion
+      .map((n, idx) => Math.abs(n - quaternion[idx]))
       .reduce((acc, curr) => acc + curr);
     if (quaternionDelta > 0.01) {
       setQuaternion(body.quaternion.toArray());
@@ -96,16 +139,21 @@ export function Font({ letter, position: initialPosition }) {
   });
 
   // extend TextGeometry to THREE
-  extend({ TextGeometry })
+  extend({ TextGeometry });
 
   return (
-    <mesh ref={ref} castShadow position={position} quaternion={quaternion} {...bind()}
-      onClick={e => {
+    <mesh
+      ref={ref}
+      castShadow
+      position={position}
+      quaternion={quaternion}
+      {...bind()}
+      onClick={(e) => {
         e.stopPropagation();
       }}
     >
-      <textGeometry attach='geometry' args={[letter, textOptions]} />
-      <meshLambertMaterial attach='material' color={'lightCoral'} />
+      <textGeometry attach="geometry" args={[letter, textOptions]} />
+      <meshLambertMaterial attach="material" color={textColor} />
     </mesh>
   );
 }
