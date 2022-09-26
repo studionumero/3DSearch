@@ -1,28 +1,28 @@
 // @ts-nocheck
+import { useState } from "react";
 // cannon
 import * as CANNON from "cannon";
-import * as THREE from "three";
-import { useCannon } from "../context/useCannon";
 import { useDrag } from "@use-gesture/react";
 // three
+import * as THREE from "three";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-// react
-import { useState } from "react";
+// context
+import { useCannon } from "../context/useCannon";
 // font
 import Roboto from "./fonts/Roboto.json";
 import ComicNeue from "./fonts/ComicNeue.json";
 import Newsreader from "./fonts/Newsreader.json";
 
 export function Font({
-  fontType,
-  fontBevel,
-  fontBevelSize,
-  fontThickness,
+  type,
+  bevel,
+  bevelSize,
+  thickness,
   fontSize,
   letter,
-  textColor,
+  color,
   position: initialPosition,
 }) {
   const { size, viewport } = useThree();
@@ -31,51 +31,26 @@ export function Font({
   const aspect = size.width / viewport.width;
 
   function fontCheck() {
-    if (fontType === "Roboto") {
+    if (type === "Roboto") {
       return Roboto;
-    } else if (fontType === "ComicNeue") {
+    } else if (type === "ComicNeue") {
       return ComicNeue;
-    } else if (fontType === "Newsreader") {
+    } else if (type === "Newsreader") {
       return Newsreader;
     }
   }
 
-  function bevelThickness() {
-    if (fontBevel === true) {
-      return 0.2;
-    } else return 0;
-  }
-
-  function bevelSize() {
-    if (fontBevel === true) {
-      return fontBevelSize;
-    } else return 0;
-  }
-
-  function bevelOffset() {
-    if (fontBevel === true) {
-      return -0.01;
-    } else return 0;
-  }
-
-  function bevelSegments() {
-    if (fontBevel === true) {
-      return 6;
-    } else return 0;
-  }
-
   const font = new FontLoader().parse(fontCheck());
-
   const textOptions = {
     font,
     size: fontSize,
-    height: fontThickness,
+    height: thickness,
     curveSegments: 4,
-    bevelEnabled: fontBevel,
-    bevelThickness: bevelThickness(),
-    bevelSize: bevelSize(),
-    bevelOffset: bevelOffset(),
-    bevelSegments: bevelSegments(),
+    bevelEnabled: bevel,
+    bevelThickness: bevel ? 0.2 : 0,
+    bevelSize: bevel ? bevelSize : 0,
+    bevelOffset: bevel ? -0.01 : 0,
+    bevelSegments: bevel ? 6 : 0,
   };
 
   const letterGeometry = new TextGeometry(letter, textOptions);
@@ -153,7 +128,7 @@ export function Font({
       }}
     >
       <textGeometry attach="geometry" args={[letter, textOptions]} />
-      <meshLambertMaterial attach="material" color={textColor} />
+      <meshLambertMaterial attach="material" color={color} />
     </mesh>
   );
 }

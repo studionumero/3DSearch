@@ -1,12 +1,15 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+// app
+import App from "./App";
+// three
+import { Canvas } from "@react-three/fiber";
+// context
+import SettingContextProvider from "./context/settingContext";
+// style
+import "./index.css";
 
-import { Canvas } from '@react-three/fiber';
-
-import './index.css';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Canvas
@@ -15,7 +18,9 @@ root.render(
       gl={{ alpha: false }}
       camera={{ position: [0, 0, 10], fov: 45 }}
     >
-      <App />
+      <SettingContextProvider>
+        <App />
+      </SettingContextProvider>
     </Canvas>
   </React.StrictMode>
 );
