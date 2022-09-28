@@ -3,7 +3,7 @@ import { createContext, useReducer, useEffect } from "react";
 
 export const SettingContext = createContext();
 
-const values = {
+const defaultValues = {
   type: "Roboto",
   size: 2.4,
   bevel: true,
@@ -14,76 +14,100 @@ const values = {
   thickness: 0.52,
   bevelSize: 0.22,
   brightness: 0.49,
+  typeCount: 0,
+  engineCount: 0,
+  panel: false,
 };
 
+// if no key exists in localStorage, set value to defaultValue, else set value to localStorage value
 const initialState = {
   type: !JSON.parse(localStorage.getItem("type"))
-    ? values.type
+    ? defaultValues.type
     : JSON.parse(localStorage.getItem("type")),
   size: !JSON.parse(localStorage.getItem("size"))
-    ? values.size
+    ? defaultValues.size
     : JSON.parse(localStorage.getItem("size")),
   bevel: !JSON.parse(localStorage.getItem("bevel"))
-    ? values.bevel
+    ? defaultValues.bevel
     : JSON.parse(localStorage.getItem("bevel")),
   engine: !JSON.parse(localStorage.getItem("engine"))
-    ? values.engine
+    ? defaultValues.engine
     : JSON.parse(localStorage.getItem("engine")),
   gravity: !JSON.parse(localStorage.getItem("gravity"))
-    ? values.gravity
+    ? defaultValues.gravity
     : JSON.parse(localStorage.getItem("gravity")),
   color: !JSON.parse(localStorage.getItem("color"))
-    ? values.color
+    ? defaultValues.color
     : JSON.parse(localStorage.getItem("color")),
   bg: !JSON.parse(localStorage.getItem("bg"))
-    ? values.bg
+    ? defaultValues.bg
     : JSON.parse(localStorage.getItem("bg")),
   thickness: !JSON.parse(localStorage.getItem("thickness"))
-    ? values.thickness
+    ? defaultValues.thickness
     : JSON.parse(localStorage.getItem("thickness")),
   bevelSize: !JSON.parse(localStorage.getItem("bevelSize"))
-    ? values.bevelSize
+    ? defaultValues.bevelSize
     : JSON.parse(localStorage.getItem("bevelSize")),
   brightness: !JSON.parse(localStorage.getItem("brightness"))
-    ? values.brightness
+    ? defaultValues.brightness
     : JSON.parse(localStorage.getItem("brightness")),
+  typeCount: !JSON.parse(localStorage.getItem("typeCount"))
+    ? defaultValues.typeCount
+    : JSON.parse(localStorage.getItem("typeCount")),
+  engineCount: !JSON.parse(localStorage.getItem("engineCount"))
+    ? defaultValues.engineCount
+    : JSON.parse(localStorage.getItem("engineCount")),
 };
 
+const typeOptions = [
+  { id: 0, value: "Roboto" },
+  { id: 1, value: "ComicNeue" },
+  { id: 2, value: "Newsreader" },
+];
+
+const engineOptions = [
+  { id: 0, value: "https://www.google.com/search" },
+  { id: 1, value: "https://www.bing.com/search" },
+  { id: 2, value: "https://search.yahoo.com/search" },
+  { id: 3, value: "https://duckduckgo.com/" },
+];
+
 export const ACTIONS = {
-  SET_TYPE: "set-type",
-  SET_SIZE: "set-size",
-  SET_BEVEL: "set-bevel",
-  SET_ENGINE: "set-engine",
-  SET_GRAVITY: "set-gravity",
-  SET_COLOR: "set-color",
-  SET_BG: "set-bg",
-  SET_THICKNESS: "set-thickness",
-  SET_BEVELSIZE: "set-bevelsize",
-  SET_BRIGHTNESS: "set-brightness",
+  INCREMENT: "increment",
+  DECREMENT: "decrement",
+  SET: "set",
 };
 
 function reducer(state, action) {
+  // Verify which value we need to update along with its count
+  const isType = action.name.includes("type");
+  // Select the proper option in context
+  const options = isType ? typeOptions : engineOptions;
+
   switch (action.type) {
-    case ACTIONS.SET_TYPE:
-      return { ...state, type: action.payload };
-    case ACTIONS.SET_SIZE:
-      return { ...state, size: action.payload };
-    case ACTIONS.SET_BEVEL:
-      return { ...state, bevel: action.payload };
-    case ACTIONS.SET_ENGINE:
-      return { ...state, engine: action.payload };
-    case ACTIONS.SET_GRAVITY:
-      return { ...state, gravity: action.payload };
-    case ACTIONS.SET_COLOR:
-      return { ...state, color: action.payload };
-    case ACTIONS.SET_BG:
-      return { ...state, bg: action.payload };
-    case ACTIONS.SET_THICKNESS:
-      return { ...state, thickness: action.payload };
-    case ACTIONS.SET_BEVELSIZE:
-      return { ...state, bevelSize: action.payload };
-    case ACTIONS.SET_BRIGHTNESS:
-      return { ...state, brightness: action.payload };
+    case ACTIONS.INCREMENT:
+      // Increment the count for use in the value and type setting
+      const incrementedCount = (state[action.name] + 1) % options.length;
+      return {
+        ...state,
+        // Set the new count
+        [action.name]: incrementedCount,
+        // Set the new color or shape type
+        [isType ? "type" : "engine"]: options[incrementedCount].value,
+      };
+    case ACTIONS.DECREMENT:
+      // Decrement the count for use in the value and type setting
+      const decrementedCount =
+        (state[action.name] - 1 + options.length) % options.length;
+      return {
+        ...state,
+        // Set the new count
+        [action.name]: decrementedCount,
+        // Set the new color or shape type
+        [isType ? "type" : "engine"]: options[decrementedCount].value,
+      };
+    case ACTIONS.SET:
+      return { ...state, [action.name]: action.payload };
     default:
       return initialState;
   }
@@ -92,49 +116,58 @@ function reducer(state, action) {
 export default function SettingContextProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const addData = (props) => {
+  // Payload only contains name of the value
+  const decrement = props => {
     dispatch({
-      type: props.action,
-      payload: props.payload,
+      type: ACTIONS.DECREMENT,
+      name: props.name,
     });
-    localStorage.setItem(props.name, JSON.stringify(props.payload));
+  };
+  const increment = props => {
+    dispatch({
+      type: ACTIONS.INCREMENT,
+      name: props.name,
+    });
+  };
+
+  const setData = props => {
+    dispatch({
+      type: ACTIONS.SET,
+      payload: props.payload,
+      name: props.name,
+    });
   };
 
   useEffect(() => {
-    if (!localStorage.getItem("type")) {
-      localStorage.setItem("type", JSON.stringify(values.type));
-    }
-    if (!localStorage.getItem("size")) {
-      localStorage.setItem("size", JSON.stringify(values.size));
-    }
-    if (!localStorage.getItem("bevel")) {
-      localStorage.setItem("bevel", JSON.stringify(values.bevel));
-    }
-    if (!localStorage.getItem("engine")) {
-      localStorage.setItem("engine", JSON.stringify(values.engine));
-    }
-    if (!localStorage.getItem("gravity")) {
-      localStorage.setItem("gravity", JSON.stringify(values.gravity));
-    }
-    if (!localStorage.getItem("color")) {
-      localStorage.setItem("color", JSON.stringify(values.color));
-    }
-    if (!localStorage.getItem("bg")) {
-      localStorage.setItem("bg", JSON.stringify(values.bg));
-    }
-    if (!localStorage.getItem("thickness")) {
-      localStorage.setItem("thickness", JSON.stringify(values.thickness));
-    }
-    if (!localStorage.getItem("bevelSize")) {
-      localStorage.setItem("bevelSize", JSON.stringify(values.bevelSize));
-    }
-    if (!localStorage.getItem("brightness")) {
-      localStorage.setItem("brightness", JSON.stringify(values.brightness));
-    }
-  }, []);
+    localStorage.setItem("type", JSON.stringify(state.type));
+    localStorage.setItem("size", JSON.stringify(state.size));
+    localStorage.setItem("bevel", JSON.stringify(state.bevel));
+    localStorage.setItem("engine", JSON.stringify(state.engine));
+    localStorage.setItem("gravity", JSON.stringify(state.gravity));
+    localStorage.setItem("color", JSON.stringify(state.color));
+    localStorage.setItem("bg", JSON.stringify(state.bg));
+    localStorage.setItem("thickness", JSON.stringify(state.thickness));
+    localStorage.setItem("bevelSize", JSON.stringify(state.bevelSize));
+    localStorage.setItem("brightness", JSON.stringify(state.brightness));
+    localStorage.setItem("typeCount", JSON.stringify(state.typeCount));
+    localStorage.setItem("engineCount", JSON.stringify(state.engineCount));
+  }, [
+    state.type,
+    state.size,
+    state.bevel,
+    state.engine,
+    state.gravity,
+    state.color,
+    state.bg,
+    state.thickness,
+    state.bevelSize,
+    state.brightness,
+    state.typeCount,
+    state.engineCount,
+  ]);
 
   return (
-    <SettingContext.Provider value={{ state: state, addData: addData }}>
+    <SettingContext.Provider value={{ state, setData, increment, decrement }}>
       {children}
     </SettingContext.Provider>
   );

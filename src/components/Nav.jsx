@@ -1,26 +1,26 @@
 // @ts-nocheck
 import OutsideClickHandler from "react-outside-click-handler";
-import { useState } from "react";
 // slider
 import ReactSlider from "react-slider";
-// context
-import { ACTIONS } from "../context/settingContext";
 // styles
 import "../index.css";
 
 export default function Nav(props) {
-  const [settings, setSettings] = useState(false);
-
   return (
     <section className="absolute right-0 top-0 h-full">
-      <NavBar settings={settings} setSettings={setSettings} />
+      <NavBar setData={props.setData} panel={props.panel} />
       <OutsideClickHandler
         onOutsideClick={() => {
-          setSettings(false);
+          props.setData({
+            payload: false,
+            name: "panel",
+          });
         }}
       >
-        {settings ? (
+        {props.panel ? (
           <Settings
+            increment={props.increment}
+            decrement={props.decrement}
             type={props.type}
             size={props.size}
             engine={props.engine}
@@ -31,7 +31,7 @@ export default function Nav(props) {
             bevel={props.bevel}
             bevelSize={props.bevelSize}
             thickness={props.thickness}
-            addData={props.addData}
+            setData={props.setData}
           />
         ) : (
           ""
@@ -41,11 +41,19 @@ export default function Nav(props) {
   );
 }
 
-const NavBar = ({ settings, setSettings }) => {
+const NavBar = ({ setData, panel }) => {
   return (
     <nav className="relative flex flex-row justify-end py-1.5 px-3 mt-[1px]">
       <section className="flex flex-col gap-1.5">
-        <button onClick={() => setSettings(!settings)} className="sm:block">
+        <button
+          onClick={() => {
+            setData({
+              payload: !panel,
+              name: "panel",
+            });
+          }}
+          className="sm:block"
+        >
           <span className="material-symbols-sharp material-fill-active">
             settings_applications
           </span>
@@ -59,7 +67,7 @@ const NavBar = ({ settings, setSettings }) => {
           <span
             className={
               "material-symbols-sharp" +
-              (settings ? " material-fill" : " material-fill-active")
+              (panel ? " material-fill" : " material-fill-active")
             }
           >
             code_blocks
@@ -70,7 +78,7 @@ const NavBar = ({ settings, setSettings }) => {
   );
 };
 
-const SideBar = (props) => (
+const SideBar = props => (
   <section
     className="absolute w-60 h-max right-[60px] mt-[-3px]"
     style={{ top: props.top }}
@@ -85,6 +93,8 @@ const SideBar = (props) => (
 );
 
 const Settings = ({
+  increment,
+  decrement,
   type,
   size,
   engine,
@@ -93,33 +103,9 @@ const Settings = ({
   brightness,
   bevel,
   bevelSize,
-  addData,
+  setData,
 }) => {
-  const fontOptions = [
-    { id: 1, type: "Roboto" },
-    { id: 2, type: "ComicNeue" },
-    { id: 3, type: "Newsreader" },
-  ];
-
-  const searchOptions = [
-    { label: "Google", value: "https://www.google.com/search" },
-    { label: "Bing", value: "https://www.bing.com/search" },
-    { label: "Yahoo", value: "https://search.yahoo.com/search" },
-    { label: "DuckDuckGo", value: "https://duckduckgo.com/" },
-  ];
-
-  const [counterFont, setCounterFont] = useState(0);
-  const [counterSearch, setCounterSearch] = useState(0);
-
-  const increase = (props) => {
-    props.set((c) => (c + 1) % props.option.length);
-  };
-
-  const decrease = (props) => {
-    props.set((c) => (c - 1 + props.option.length) % props.option.length);
-  };
-
-  const searchEngineSlice = (engine) => {
+  const searchEngineSlice = engine => {
     let string = engine
       .split("//" || ".")
       .pop()
@@ -130,18 +116,17 @@ const Settings = ({
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const Icon = (props) => (
+  const Icon = props => (
     <span className="material-symbols-outlined lock-icon p-0.5">
       {props.name}
     </span>
   );
 
-  const ColorSwab = (props) => (
+  const ColorSwab = props => (
     <button
       className="flex items-center justify-center h-6 w-6"
       onClick={() => {
-        addData({
-          action: props.action,
+        setData({
           payload: props.color,
           name: props.name,
         });
@@ -162,11 +147,8 @@ const Settings = ({
           <div className="col-span-2 grid grid-cols-4 gap-2 items-center">
             <button
               onClick={() => {
-                decrease({ set: setCounterFont, option: fontOptions });
-                addData({
-                  action: ACTIONS.SET_TYPE,
-                  payload: fontOptions[counterFont].type,
-                  name: "type",
+                decrement({
+                  name: "typeCount",
                 });
               }}
             >
@@ -175,11 +157,8 @@ const Settings = ({
             <div className="col-span-2 flex justify-self-center">{type}</div>
             <button
               onClick={() => {
-                increase({ set: setCounterFont, option: fontOptions });
-                addData({
-                  action: ACTIONS.SET_TYPE,
-                  payload: fontOptions[counterFont].type,
-                  name: "type",
+                increment({
+                  name: "typeCount",
                 });
               }}
             >
@@ -197,9 +176,8 @@ const Settings = ({
             max={5}
             min={1}
             step={0.01}
-            onChange={(value) => {
-              addData({
-                action: ACTIONS.SET_SIZE,
+            onChange={value => {
+              setData({
                 payload: value,
                 name: "size",
               });
@@ -216,9 +194,8 @@ const Settings = ({
             max={2.5}
             min={0.2}
             step={0.01}
-            onChange={(value) => {
-              addData({
-                action: ACTIONS.SET_THICKNESS,
+            onChange={value => {
+              setData({
                 payload: value,
                 name: "thickness",
               });
@@ -228,8 +205,7 @@ const Settings = ({
         <SettingsCol>
           <button
             onClick={() => {
-              addData({
-                action: ACTIONS.SET_BEVEL,
+              setData({
                 payload: !bevel,
                 name: "bevel",
               });
@@ -270,9 +246,8 @@ const Settings = ({
             max={0.5}
             min={0.1}
             step={0.01}
-            onChange={(value) => {
-              addData({
-                action: ACTIONS.SET_BEVELSIZE,
+            onChange={value => {
+              setData({
                 payload: value,
                 name: "bevelSize",
               });
@@ -284,11 +259,8 @@ const Settings = ({
           <div className="col-span-2 grid grid-cols-4 gap-2 items-center">
             <button
               onClick={() => {
-                decrease({ set: setCounterSearch, option: searchOptions });
-                addData({
-                  action: ACTIONS.SET_ENGINE,
-                  payload: searchOptions[counterSearch].value,
-                  name: "engine",
+                decrement({
+                  name: "engineCount",
                 });
               }}
             >
@@ -299,11 +271,8 @@ const Settings = ({
             </div>
             <button
               onClick={() => {
-                increase({ set: setCounterSearch, option: searchOptions });
-                addData({
-                  action: ACTIONS.SET_ENGINE,
-                  payload: searchOptions[counterSearch].value,
-                  name: "engine",
+                increment({
+                  name: "engineCount",
                 });
               }}
             >
@@ -321,9 +290,8 @@ const Settings = ({
             max={20}
             min={-20}
             step={0.01}
-            onChange={(value) => {
-              addData({
-                action: ACTIONS.SET_GRAVITY,
+            onChange={value => {
+              setData({
                 payload: value,
                 name: "gravity",
               });
@@ -340,9 +308,8 @@ const Settings = ({
             max={2}
             min={0.1}
             step={0.01}
-            onChange={(value) => {
-              addData({
-                action: ACTIONS.SET_BRIGHTNESS,
+            onChange={value => {
+              setData({
                 payload: value,
                 name: "brightness",
               });
@@ -352,28 +319,16 @@ const Settings = ({
         <SettingsCol>
           <span className="col-span-1 flex align-middle">Color</span>
           <div className="col-span-2 grid grid-cols-4 gap-4 items-center mx-[-6px]">
-            <ColorSwab
-              action={ACTIONS.SET_COLOR}
-              name="color"
-              color="#f08080"
-            />
-            <ColorSwab
-              action={ACTIONS.SET_COLOR}
-              name="color"
-              color="#D2B48C"
-            />
-            <ColorSwab
-              action={ACTIONS.SET_COLOR}
-              name="color"
-              color="#9ACD32"
-            />
+            <ColorSwab name="color" color="#f08080" />
+            <ColorSwab name="color" color="#D2B48C" />
+            <ColorSwab name="color" color="#9ACD32" />
           </div>
         </SettingsCol>
         <SettingsCol>
           <span className="col-span-1 flex align-middle">BG Color</span>
           <div className="col-span-2 grid grid-cols-4 gap-4 items-center mx-[-6px]">
-            <ColorSwab action={ACTIONS.SET_BG} name="bg" color="#6E9BA6" />
-            <ColorSwab action={ACTIONS.SET_BG} name="bg" color="#2F4F4F" />
+            <ColorSwab name="bg" color="#6E9BA6" />
+            <ColorSwab name="bg" color="#2F4F4F" />
           </div>
         </SettingsCol>
       </section>
@@ -381,7 +336,7 @@ const Settings = ({
   );
 };
 
-const SettingsCol = (props) => (
+const SettingsCol = props => (
   <div className="grid grid-cols-3 gap-6 h-[40px] items-center">
     {props.children}
   </div>

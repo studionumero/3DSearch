@@ -10,14 +10,17 @@ import "../index.css";
 export default function Home(props) {
   const { register, handleSubmit } = useForm();
 
-  const handleChange = (event) => {
-    props.setSearch(event.target.value);
+  const handleChange = event => {
+    props.setSearch([...props.search, [event.target.value.slice(-1), "key"]]);
+    // console.log(props.search);
   };
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }}>
       <main className="flex flex-col w-full h-full p-2">
         <Nav
+          increment={props.increment}
+          decrement={props.decrement}
           bevelSize={props.bevelSize}
           bevel={props.bevel}
           thickness={props.thickness}
@@ -28,7 +31,8 @@ export default function Home(props) {
           color={props.color}
           engine={props.engine}
           bg={props.bg}
-          addData={props.addData}
+          panel={props.panel}
+          setData={props.setData}
         />
         <section className="flex grow" />
         <section
@@ -82,14 +86,14 @@ export default function Home(props) {
                 role="search"
                 placeholder=""
                 onChange={handleChange}
+                // value={props.search}
                 aria-label="Search"
                 maxLength={200}
-                onKeyDown={(e) => props.myKey(e)}
+                onKeyDown={e => props.myKey(e)}
                 autoComplete="off"
                 spellCheck="false"
               />
-              {props.search.trim().length === 0 &&
-              props.objects.length === 0 ? (
+              {props.search.length === 0 && props.objects.length === 0 ? (
                 ""
               ) : (
                 <button
@@ -110,13 +114,13 @@ export default function Home(props) {
   );
 }
 
-const SearchBar = (props) => (
+const SearchBar = props => (
   <div className="flex flex-row rounded-sm w-full h-12 bg-white px-3.5 py-1 items-center">
     {props.children}
   </div>
 );
 
-const InputIcon = (props) => (
+const InputIcon = props => (
   <span
     className="material-symbols-sharp"
     style={{ color: "#84AFBA", fontSize: props.fontSize }}

@@ -15,27 +15,18 @@ import Roboto from "./fonts/Roboto.json";
 import ComicNeue from "./fonts/ComicNeue.json";
 import Newsreader from "./fonts/Newsreader.json";
 
-export function Font({
-  type,
-  bevel,
-  bevelSize,
-  thickness,
-  fontSize,
-  letter,
-  color,
-  position: initialPosition,
-}) {
+export function Font(props) {
   const { size, viewport } = useThree();
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(props.initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 
   function fontCheck() {
-    if (type === "Roboto") {
+    if (props.type === "Roboto") {
       return Roboto;
-    } else if (type === "ComicNeue") {
+    } else if (props.type === "ComicNeue") {
       return ComicNeue;
-    } else if (type === "Newsreader") {
+    } else if (props.type === "Newsreader") {
       return Newsreader;
     }
   }
@@ -43,17 +34,17 @@ export function Font({
   const font = new FontLoader().parse(fontCheck());
   const textOptions = {
     font,
-    size: fontSize,
-    height: thickness,
+    size: props.fontSize,
+    height: props.thickness,
     curveSegments: 4,
-    bevelEnabled: bevel,
-    bevelThickness: bevel ? 0.2 : 0,
-    bevelSize: bevel ? bevelSize : 0,
-    bevelOffset: bevel ? -0.01 : 0,
-    bevelSegments: bevel ? 6 : 0,
+    bevelEnabled: props.bevel,
+    bevelThickness: props.bevel ? 0.2 : 0,
+    bevelSize: props.bevel ? props.bevelSize : 0,
+    bevelOffset: props.bevel ? -0.01 : 0,
+    bevelSegments: props.bevel ? 6 : 0,
   };
 
-  const letterGeometry = new TextGeometry(letter, textOptions);
+  const letterGeometry = new TextGeometry(props.letter, textOptions);
 
   letterGeometry.computeBoundingSphere();
   letterGeometry.computeBoundingBox();
@@ -72,7 +63,7 @@ export function Font({
 
   const { ref, body } = useCannon(
     { bodyProps: { mass: 100 } },
-    (body) => {
+    body => {
       body.addShape(box, new CANNON.Vec3(center.x, center.y, center.z));
       body.position.set(...position);
     },
@@ -123,12 +114,12 @@ export function Font({
       position={position}
       quaternion={quaternion}
       {...bind()}
-      onClick={(e) => {
+      onClick={e => {
         e.stopPropagation();
       }}
     >
-      <textGeometry attach="geometry" args={[letter, textOptions]} />
-      <meshLambertMaterial attach="material" color={color} />
+      <textGeometry attach="geometry" args={[props.letter, textOptions]} />
+      <meshLambertMaterial attach="material" color={props.color} />
     </mesh>
   );
 }

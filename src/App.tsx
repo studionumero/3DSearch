@@ -13,13 +13,15 @@ import { useThree } from "@react-three/fiber";
 import { useState, useContext } from "react";
 // context
 import { SettingContext } from "./context/settingContext";
+// nanoid
+import { nanoid } from "nanoid";
 // styles
 import "./index.css";
 
 export default function App() {
   const [objects, setObjects] = useState([]);
   const [search, setSearch] = useState("");
-  const { state, addData } = useContext(SettingContext);
+  const { state, setData, increment, decrement } = useContext(SettingContext);
   const { mouse, camera } = useThree();
 
   const onReset = () => {
@@ -27,7 +29,7 @@ export default function App() {
     setSearch("");
   };
 
-  const key = (e) => {
+  const key = e => {
     if (
       (e.keyCode >= 48 && e.keyCode <= 90) ||
       (e.keyCode >= 96 && e.keyCode <= 105)
@@ -38,7 +40,7 @@ export default function App() {
         str += `${p}:${val}\n`;
       }
       // Returns letter in array
-      var keyVal = str.split(":").pop().toUpperCase();
+      var letter = str.split(":").pop().toUpperCase();
       var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
       vector.unproject(camera);
       var dir = vector.sub(camera.position).normalize();
@@ -50,22 +52,23 @@ export default function App() {
       var Ymin = pos.y * -2;
       var XcoordVal = Math.floor(Math.random() * (Xmax - Xmin + 1)) + Xmin;
       var YcoordVal = Math.floor(Math.random() * (Ymax - Ymin + 1)) + Ymin;
-      const position = [XcoordVal / 4, YcoordVal / 8, 2];
+      const initialPosition = [XcoordVal / 4, YcoordVal / 8, 2];
 
       setObjects([
         ...objects,
         <Font
-          position={position}
-          letter={keyVal}
-          key={Math.random()}
+          letter={letter}
+          key={nanoid()}
           bevelSize={state.bevelSize}
           bevel={state.bevel}
           thickness={state.thickness}
           fontSize={state.size}
           type={state.type}
           color={state.color}
+          initialPosition={initialPosition}
         />,
       ]);
+      // console.log(objects[0]);
     } else {
       return null;
     }
@@ -75,9 +78,13 @@ export default function App() {
       <Home
         reset={onReset}
         myKey={key}
+        increment={increment}
+        decrement={decrement}
+        setData={setData}
         search={search}
         setSearch={setSearch}
         objects={objects}
+        panel={state.panel}
         bevelSize={state.bevelSize}
         bevel={state.bevel}
         thickness={state.thickness}
@@ -88,7 +95,6 @@ export default function App() {
         color={state.color}
         engine={state.engine}
         bg={state.bg}
-        addData={addData}
       />
       <ambientLight intensity={state.brightness / 2} />
       <hemisphereLight
