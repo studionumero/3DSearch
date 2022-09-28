@@ -54,7 +54,10 @@ const NavBar = ({ setData, panel }) => {
           }}
           className="sm:block"
         >
-          <span className="material-symbols-sharp material-fill-active">
+          <span
+            className="material-symbols-sharp material-icon nav-icon"
+            style={{ fontSize: "36px" }}
+          >
             settings_applications
           </span>
         </button>
@@ -66,9 +69,10 @@ const NavBar = ({ setData, panel }) => {
         >
           <span
             className={
-              "material-symbols-sharp" +
-              (panel ? " material-fill" : " material-fill-active")
+              "material-symbols-sharp material-icon " +
+              (panel ? "nav-icon-inactive" : "nav-icon")
             }
+            style={{ fontSize: "36px" }}
           >
             code_blocks
           </span>
@@ -117,7 +121,10 @@ const Settings = ({
   };
 
   const Icon = props => (
-    <span className="material-symbols-outlined lock-icon p-0.5">
+    <span
+      className="material-symbols-outlined p-0.5 text-[#222222]"
+      style={{ fontSize: "18px" }}
+    >
       {props.name}
     </span>
   );
@@ -220,8 +227,9 @@ const Settings = ({
               <span
                 className={
                   "material-symbols-outlined" +
-                  (bevel ? " lock-icon" : " lock-icon-active")
+                  (bevel ? " lock-icon" : " lock-icon-disabled")
                 }
+                style={{ fontSize: "18px" }}
               >
                 {bevel ? "lock_open" : "lock"}
               </span>

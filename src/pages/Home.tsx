@@ -1,5 +1,4 @@
 // @ts-nocheck
-import { useForm } from "react-hook-form";
 // components
 import Nav from "../components/Nav";
 // three
@@ -8,8 +7,6 @@ import { Html as HTML } from "@react-three/drei";
 import "../index.css";
 
 export default function Home(props) {
-  const { register, handleSubmit } = useForm();
-
   const handleChange = event => {
     props.setSearch([...props.search, [event.target.value.slice(-1), "key"]]);
     // console.log(props.search);
@@ -61,7 +58,6 @@ export default function Home(props) {
             <span className="text-white">Search</span>
           </div>
           <form
-            onSubmit={handleSubmit}
             className="flex flex-col gap-y-6"
             method="get"
             action={props.engine}
@@ -69,11 +65,6 @@ export default function Home(props) {
             <SearchBar>
               <InputIcon icon="search" fontSize="22px" />
               <input
-                {...register("search", {
-                  required: true,
-                  maxLength: 200,
-                  minLength: 1,
-                })}
                 type="search"
                 className="form-control
                   block
@@ -83,6 +74,7 @@ export default function Home(props) {
                   outline-none"
                 name="q"
                 id="search"
+                title="Search"
                 role="search"
                 placeholder=""
                 onChange={handleChange}
@@ -92,6 +84,8 @@ export default function Home(props) {
                 onKeyDown={e => props.myKey(e)}
                 autoComplete="off"
                 spellCheck="false"
+                minLength={1}
+                required
               />
               {props.search.length === 0 && props.objects.length === 0 ? (
                 ""
