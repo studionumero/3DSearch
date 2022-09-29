@@ -62,6 +62,7 @@ The 3DSearch philosophy is to improve the user experience of searching the inter
 ### Current features needed
 
 - Develop automatic testing for all UI items
+- Converting existing JSX syntax to use static typing
 - Remove letters from scene when a backspace event occurs (or a cut)
 - Improve the Cannon letter geometry to accurately match the selected font
 - Improve the drag interaction
@@ -76,7 +77,7 @@ If you find yourself wishing for a feature that doesn't exist in 3DSearch, you a
 
 # Code review process
 
-Currently, as the core team is still developing, Pull Requests are being examined on a weekly basis. As the team grows and the project has more contributors, this will change.
+Currently, as the core team is still developing, new commits are being examined on a weekly basis. As the team grows and the project has more contributors, this will change.
 
 # Community
 
@@ -89,6 +90,8 @@ You can chat with the core team on [Discord](https://discord.gg/6EZxJKuAgB).
 Fonts have been added by using [Facetype](https://gero3.github.io/facetype.js/) to convert TTF file formatted fonts to JSON files so that they can be read by Three's FontLoader.
 
 Only regular (400 weight), non-italicized, non-bold fonts should be used. If the default font name causes overflow in the settings, the name should be shortened or abbreviated.
+
+All fonts should be easily readable without the bevel property having been applied.
 
 ### Style guide
 

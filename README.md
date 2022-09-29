@@ -26,11 +26,11 @@ Tests have not yet been developed.
 
 ## Deployment
 
-All pushes must be made within their respective feature branch. As features are completed, they will be merged into the develop branch. 
+3DSearch uses the [trunk based development](https://trunkbaseddevelopment.com/) branching model. All contributitions must be made to their respective feature branch.
 
 ## Built with
 
-- [Create React App](https://create-react-app.dev/) - Tool to initialize the web framework used (React)
+- [React](https://reactjs.org/) - The web framework used
 - [Typescript](https://www.npmjs.com/package/typescript) - Syntactic superset of JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) - The CSS framework used
 - [Three](https://www.npmjs.com/package/three) - JavaScript 3D library
@@ -43,7 +43,7 @@ All pushes must be made within their respective feature branch. As features are 
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and much more information.
 
 ## Versioning
 
