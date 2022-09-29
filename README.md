@@ -43,7 +43,7 @@ Tests have not yet been developed.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and much more information.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and much more information.
 
 ## Versioning
 
