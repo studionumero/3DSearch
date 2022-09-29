@@ -14,6 +14,8 @@ import { useCannon } from "../context/useCannon";
 import Roboto from "./fonts/Roboto.json";
 import ComicNeue from "./fonts/ComicNeue.json";
 import Newsreader from "./fonts/Newsreader.json";
+import PressStart2P from "./fonts/PressStart2P.json";
+import Audiowide from "./fonts/Audiowide.json";
 
 export function Font(props) {
   const { size, viewport } = useThree();
@@ -24,6 +26,10 @@ export function Font(props) {
   function fontCheck() {
     if (props.type === "Roboto") {
       return Roboto;
+    } else if (props.type === "Press Start") {
+      return PressStart2P;
+    } else if (props.type === "Audiowide") {
+      return Audiowide;
     } else if (props.type === "ComicNeue") {
       return ComicNeue;
     } else if (props.type === "Newsreader") {

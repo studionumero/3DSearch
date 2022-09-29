@@ -61,8 +61,10 @@ const initialState = {
 
 const typeOptions = [
   { id: 0, value: "Roboto" },
-  { id: 1, value: "ComicNeue" },
-  { id: 2, value: "Newsreader" },
+  { id: 1, value: "Press Start" },
+  { id: 2, value: "Audiowide" },
+  { id: 3, value: "ComicNeue" },
+  { id: 4, value: "Newsreader" },
 ];
 
 const engineOptions = [

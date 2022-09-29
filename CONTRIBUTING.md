@@ -146,7 +146,9 @@ You can chat with the core team on [Discord](https://discord.gg/6EZxJKuAgB).
 
 ### New fonts
 
-Fonts have been added by using [Facetype](https://gero3.github.io/facetype.js/) to convert downloaded fonts to JSON files so that they can be read by Three's FontLoader.
+Fonts have been added by using [Facetype](https://gero3.github.io/facetype.js/) to convert TTF file formatted fonts to JSON files so that they can be read by Three's FontLoader.
+
+Only regular (400 weight), non-italicized, non-bold fonts should be used. If the default font name causes overflow in the settings, the name should be shortened or abbreviated.
 
 ### Style guide
 

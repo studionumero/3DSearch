@@ -122,7 +122,10 @@ const Settings = ({
 
   const Icon = props => (
     <span
-      className="material-symbols-outlined p-0.5 text-[#222222]"
+      className={
+        "material-symbols-outlined py-0.5 text-[#222222] w-[12px] " +
+        props.margin
+      }
       style={{ fontSize: "18px" }}
     >
       {props.name}
@@ -151,25 +154,29 @@ const Settings = ({
       <section className="grid grid-rows-3">
         <SettingsCol>
           <span className="col-span-1 align-middle">Type</span>
-          <div className="col-span-2 grid grid-cols-4 gap-2 items-center">
+          <div className="col-span-2 flex flex-row justify-between items-center">
             <button
               onClick={() => {
                 decrement({
                   name: "typeCount",
                 });
               }}
+              className="w-[22px] h-[22px] ml-[-6px]"
             >
-              <Icon name="navigate_before" />
+              <Icon name="navigate_before" margin="ml-[-8px]" />
             </button>
-            <div className="col-span-2 flex justify-self-center">{type}</div>
+            <div className="col-span-2 whitespace-nowrap flex-row justify-self-center text-center items-center">
+              {type}
+            </div>
             <button
               onClick={() => {
                 increment({
                   name: "typeCount",
                 });
               }}
+              className="w-[22px] h-[22px] mr-[-6px]"
             >
-              <Icon name="navigate_next" />
+              <Icon name="navigate_next" margin="" />
             </button>
           </div>
         </SettingsCol>
@@ -264,15 +271,16 @@ const Settings = ({
         </SettingsCol>
         <SettingsCol>
           <span className="col-span-1 align-middle">Search Engine</span>
-          <div className="col-span-2 grid grid-cols-4 gap-2 items-center">
+          <div className="col-span-2 flex flex-row justify-between items-center">
             <button
               onClick={() => {
                 decrement({
                   name: "engineCount",
                 });
               }}
+              className="w-[22px] h-[22px] ml-[-6px]"
             >
-              <Icon name="navigate_before" />
+              <Icon name="navigate_before" margin="ml-[-8px]" />
             </button>
             <div className="col-span-2 flex justify-self-center">
               {searchEngineSlice(engine)}
@@ -283,8 +291,9 @@ const Settings = ({
                   name: "engineCount",
                 });
               }}
+              className="w-[22px] h-[22px] mr-[-6px]"
             >
-              <Icon name="navigate_next" />
+              <Icon name="navigate_next" margin="" />
             </button>
           </div>
         </SettingsCol>
