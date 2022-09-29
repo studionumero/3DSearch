@@ -1,62 +1,34 @@
 # 3DSearch
 
-3DSearch was developed in order to create a fun and interactive app that adds to the experience of searching the internet. This project strives for user satisfaction regardless of technical skill by providing an engaging and easily customizable interface.
+The 3DSearch philosophy is to improve the user experience of searching the internet by providing a fun and interactive interface that's easy to use for web surfers of all levels. 3DSearch aims to be a simple tool for interacting in a 3D environment; users can customize a variety of settings, allowing them a personalized first-stop page before exploring the rest of the world wide web.
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+By running the following command in your choice of terminal, you will clone the git repo.
 
 ```
-Give the example
+git clone https://github.com/glennphil/3DSearch.git && cd 3DSearch && npm i
 ```
 
-And repeat
+Ensure that you're in the correct feature branch that you wish to contribute to by running the following command:
 
 ```
-until finished
+git checkout (branch name)
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
 Tests have not yet been developed.
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+All pushes must be made within their respective feature branch. As features are completed, they will be merged into the develop branch. 
 
-## Built With
+## Built with
 
 - [Create React App](https://create-react-app.dev/) - Tool to initialize the web framework used (React)
 - [Typescript](https://www.npmjs.com/package/typescript) - Syntactic superset of JavaScript
@@ -75,7 +47,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/glennphil/3d-search/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/glennphil/3DSearch/tags).
 
 ## Authors
 

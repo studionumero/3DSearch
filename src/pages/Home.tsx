@@ -102,7 +102,11 @@ export default function Home(props) {
             </SearchBar>
           </form>
         </section>
-        <section className="flex grow-[2]" />
+        <section className="flex grow-[2]">
+          <div className="absolute bottom-0 right-[49px] h-min pb-2 text-white">
+          <span>3DSearch is an open-source project.</span>
+          </div>
+        </section>
       </main>
     </HTML>
   );
