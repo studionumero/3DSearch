@@ -12,6 +12,7 @@
 - [Code review process](#code-review-process)
 - [Community](#community)
 - [Conventions](#conventions)
+  - [Commits](#commits)
   - [New fonts](#new-fonts)
   - [Style guide](#style-guide)
 
@@ -84,6 +85,10 @@ Currently, as the core team is still developing, new commits are being examined 
 You can chat with the core team on [Discord](https://discord.gg/6EZxJKuAgB).
 
 # Conventions
+
+### Commits
+
+All commits must follow this [format](https://gist.github.com/lisawolderiksen/a7b99d94c92c6671181611be1641c733).
 
 ### New fonts
 
