@@ -1,11 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
 // app
 import App from "./App";
 // three
 import { Canvas } from "@react-three/fiber";
 // context
-import SettingContextProvider from "./context/settingContext";
+import SettingContextProvider from "./context/SettingContext";
 // style
 import "./index.css";
 

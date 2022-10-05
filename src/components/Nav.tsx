@@ -1,37 +1,39 @@
-// @ts-nocheck
+import { ReactElement, ReactFragment, FC } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 // slider
 import ReactSlider from "react-slider";
+// interfaces
+import { DefaultValuesInterface, SettingsInterface } from "../interfaces/Settings";
 // styles
 import "../index.css";
 
-export default function Nav(props) {
+type Props = DefaultValuesInterface & SettingsInterface
+
+const Nav : FC<Props> = ({bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, increment, decrement, setData }) => {
   return (
     <section className="absolute right-0 top-0 h-full">
-      <NavBar setData={props.setData} panel={props.panel} />
+      <NavBar setData={setData} panel={panel} />
       <OutsideClickHandler
         onOutsideClick={() => {
-          props.setData({
+          setData({
             payload: false,
             name: "panel",
           });
         }}
       >
-        {props.panel ? (
+        {panel ? (
           <Settings
-            increment={props.increment}
-            decrement={props.decrement}
-            type={props.type}
-            size={props.size}
-            engine={props.engine}
-            gravity={props.gravity}
-            color={props.color}
-            bg={props.bg}
-            brightness={props.brightness}
-            bevel={props.bevel}
-            bevelSize={props.bevelSize}
-            thickness={props.thickness}
-            setData={props.setData}
+            increment={increment}
+            decrement={decrement}
+            setData={setData}
+            type={type}
+            fontSize={fontSize}
+            engine={engine}
+            gravity={gravity}
+            brightness={brightness}
+            bevel={bevel}
+            bevelSize={bevelSize}
+            thickness={thickness}
           />
         ) : (
           ""
@@ -41,7 +43,7 @@ export default function Nav(props) {
   );
 }
 
-const NavBar = ({ setData, panel }) => {
+const NavBar : FC<Props> = ({ setData, panel }) => {
   return (
     <nav className="relative flex flex-row justify-end py-1.5 px-3 mt-[1px]">
       <section className="flex flex-col gap-1.5">
@@ -63,7 +65,6 @@ const NavBar = ({ setData, panel }) => {
         </button>
         <a
           href="https://github.com/glennphil/3d-search"
-          alt="github code"
           target="_blank"
           rel="noreferrer"
         >
@@ -82,7 +83,7 @@ const NavBar = ({ setData, panel }) => {
   );
 };
 
-const SideBar = props => (
+const SideBar = (props: { top: string; title: string; children: ReactElement }) => (
   <section
     className="absolute w-60 h-max right-[60px] mt-[-3px]"
     style={{ top: props.top }}
@@ -96,11 +97,11 @@ const SideBar = props => (
   </section>
 );
 
-const Settings = ({
+const Settings : FC<Props> = ({
   increment,
   decrement,
   type,
-  size,
+  fontSize,
   engine,
   thickness,
   gravity,
@@ -109,7 +110,9 @@ const Settings = ({
   bevelSize,
   setData,
 }) => {
-  const searchEngineSlice = engine => {
+
+  // slices off start and end of search engine url 
+  const searchEngineSlice = (engine: string) => {
     let string = engine
       .split("//" || ".")
       .pop()
@@ -120,7 +123,7 @@ const Settings = ({
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  const Icon = props => (
+  const Icon = (props: { margin: string; name: string }) => (
     <span
       className={
         "material-symbols-outlined py-0.5 text-[#222222] w-[12px] " +
@@ -132,7 +135,7 @@ const Settings = ({
     </span>
   );
 
-  const ColorSwab = props => (
+  const ColorSwab = (props: { color: string; name: string; }) => (
     <button
       className="flex items-center justify-center h-6 w-6"
       onClick={() => {
@@ -186,7 +189,7 @@ const Settings = ({
             className="customSlider col-span-2"
             thumbClassName="customSlider-thumb"
             trackClassName="customSlider-track"
-            defaultValue={size}
+            value={fontSize}
             max={5}
             min={1}
             step={0.01}
@@ -204,7 +207,7 @@ const Settings = ({
             className="customSlider col-span-2"
             thumbClassName="customSlider-thumb"
             trackClassName="customSlider-track"
-            defaultValue={thickness}
+            value={thickness}
             max={2.5}
             min={0.2}
             step={0.01}
@@ -257,7 +260,7 @@ const Settings = ({
                 ? "customSlider-track"
                 : "customSlider-track-disabled"
             }
-            defaultValue={bevelSize}
+            value={bevelSize}
             max={0.5}
             min={0.1}
             step={0.01}
@@ -303,7 +306,7 @@ const Settings = ({
             className="customSlider col-span-2"
             thumbClassName="customSlider-thumb"
             trackClassName="customSlider-track"
-            defaultValue={gravity}
+            value={gravity}
             max={20}
             min={-20}
             step={0.01}
@@ -321,7 +324,7 @@ const Settings = ({
             className="customSlider col-span-2"
             thumbClassName="customSlider-thumb"
             trackClassName="customSlider-track"
-            defaultValue={brightness}
+            value={brightness}
             max={2}
             min={0.1}
             step={0.01}
@@ -353,8 +356,10 @@ const Settings = ({
   );
 };
 
-const SettingsCol = props => (
+const SettingsCol = (props: { children: ReactFragment }) => (
   <div className="grid grid-cols-3 gap-6 h-[40px] items-center">
     {props.children}
   </div>
 );
+
+export default Nav

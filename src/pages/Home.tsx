@@ -1,14 +1,19 @@
-// @ts-nocheck
+import { ReactFragment, FC } from "react";
 // components
 import Nav from "../components/Nav";
 // three
 import { Html as HTML } from "@react-three/drei";
+// interfaces
+import { DefaultValuesInterface, SettingsInterface } from "../interfaces/Settings";
+import { SearchInterface } from "../interfaces/Search";
 // styles
 import "../index.css";
 
-export default function Home(props) {
-  const handleChange = event => {
-    props.setSearch([...props.search, [event.target.value.slice(-1), "key"]]);
+type Props = DefaultValuesInterface & SettingsInterface & SearchInterface
+
+const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, search, setSearch, myKey, objects, reset, increment, decrement, setData }) => {
+  const handleChange = (event: { target: { value: string } }) => {
+    setSearch([...search, [event.target.value.slice(-1), "key"]]);
     // console.log(props.search);
   };
 
@@ -16,20 +21,18 @@ export default function Home(props) {
     <HTML center style={{ width: "100vw", height: "100vh" }}>
       <main className="flex flex-col w-full h-full p-2">
         <Nav
-          increment={props.increment}
-          decrement={props.decrement}
-          bevelSize={props.bevelSize}
-          bevel={props.bevel}
-          thickness={props.thickness}
-          size={props.size}
-          brightness={props.brightness}
-          gravity={props.gravity}
-          type={props.type}
-          color={props.color}
-          engine={props.engine}
-          bg={props.bg}
-          panel={props.panel}
-          setData={props.setData}
+          increment={increment}
+          decrement={decrement}
+          setData={setData}
+          bevelSize={bevelSize}
+          bevel={bevel}
+          thickness={thickness}
+          fontSize={fontSize}
+          brightness={brightness}
+          gravity={gravity}
+          type={type}
+          engine={engine}
+          panel={panel}
         />
         <section className="flex grow" />
         <section
@@ -60,7 +63,7 @@ export default function Home(props) {
           <form
             className="flex flex-col gap-y-6"
             method="get"
-            action={props.engine}
+            action={engine}
           >
             <SearchBar>
               <InputIcon icon="search" fontSize="22px" />
@@ -81,17 +84,17 @@ export default function Home(props) {
                 // value={props.search}
                 aria-label="Search"
                 maxLength={200}
-                onKeyDown={e => props.myKey(e)}
+                onKeyDown={e => myKey(e)}
                 autoComplete="off"
                 spellCheck="false"
                 minLength={1}
                 required
               />
-              {props.search.length === 0 && props.objects.length === 0 ? (
+              {search.length === 0 && objects.length === 0 ? (
                 ""
               ) : (
                 <button
-                  onClick={props.reset}
+                  onClick={reset}
                   type="reset"
                   aria-label="clear"
                   style={{ height: "24px" }}
@@ -112,13 +115,13 @@ export default function Home(props) {
   );
 }
 
-const SearchBar = props => (
+const SearchBar = (props: { children: ReactFragment }) => (
   <div className="flex flex-row rounded-sm w-full h-12 bg-white px-3.5 py-1 items-center">
     {props.children}
   </div>
 );
 
-const InputIcon = props => (
+const InputIcon = (props: { fontSize: string; icon: string }) => (
   <span
     className="material-symbols-sharp"
     style={{ color: "#84AFBA", fontSize: props.fontSize }}
@@ -126,3 +129,5 @@ const InputIcon = props => (
     {props.icon}
   </span>
 );
+
+export default Home

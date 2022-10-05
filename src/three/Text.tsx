@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useState } from "react";
+import { useState, FC } from "react";
 // cannon
 import * as CANNON from "cannon";
 import { useDrag } from "@use-gesture/react";
@@ -8,31 +8,35 @@ import * as THREE from "three";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
+// interfaces
+import { DefaultValuesInterface } from "../interfaces/Settings";
 // context
-import { useCannon } from "../context/useCannon";
+import { useCannon } from "../context/CannonContext";
 // font
-import Roboto from "./fonts/Roboto.json";
-import ComicNeue from "./fonts/ComicNeue.json";
-import Newsreader from "./fonts/Newsreader.json";
-import PressStart2P from "./fonts/PressStart2P.json";
-import Audiowide from "./fonts/Audiowide.json";
+import Roboto from "../fonts/Roboto.json";
+import ComicNeue from "../fonts/ComicNeue.json";
+import Newsreader from "../fonts/Newsreader.json";
+import PressStart2P from "../fonts/PressStart2P.json";
+import Audiowide from "../fonts/Audiowide.json";
 
-export function Font(props) {
+type Props = DefaultValuesInterface & { initialPosition: number[], letter: string }
+
+const Text : FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, bevelSize, letter, color }) => {
   const { size, viewport } = useThree();
-  const [position, setPosition] = useState(props.initialPosition);
+  const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 
-  function fontCheck() {
-    if (props.type === "Roboto") {
+  const fontCheck = () => {
+    if (type === "Roboto") {
       return Roboto;
-    } else if (props.type === "Press Start") {
+    } else if (type === "Press Start") {
       return PressStart2P;
-    } else if (props.type === "Audiowide") {
+    } else if (type === "Audiowide") {
       return Audiowide;
-    } else if (props.type === "ComicNeue") {
+    } else if (type === "ComicNeue") {
       return ComicNeue;
-    } else if (props.type === "Newsreader") {
+    } else if (type === "Newsreader") {
       return Newsreader;
     }
   }
@@ -40,17 +44,17 @@ export function Font(props) {
   const font = new FontLoader().parse(fontCheck());
   const textOptions = {
     font,
-    size: props.fontSize,
-    height: props.thickness,
+    size: fontSize,
+    height: thickness,
     curveSegments: 4,
-    bevelEnabled: props.bevel,
-    bevelThickness: props.bevel ? 0.2 : 0,
-    bevelSize: props.bevel ? props.bevelSize : 0,
-    bevelOffset: props.bevel ? -0.01 : 0,
-    bevelSegments: props.bevel ? 6 : 0,
+    bevelEnabled: bevel,
+    bevelThickness: bevel ? 0.2 : 0,
+    bevelSize: bevel ? bevelSize : 0,
+    bevelOffset: bevel ? -0.01 : 0,
+    bevelSegments: bevel ? 6 : 0,
   };
 
-  const letterGeometry = new TextGeometry(props.letter, textOptions);
+  const letterGeometry = new TextGeometry(letter, textOptions);
 
   letterGeometry.computeBoundingSphere();
   letterGeometry.computeBoundingBox();
@@ -73,7 +77,6 @@ export function Font(props) {
       body.addShape(box, new CANNON.Vec3(center.x, center.y, center.z));
       body.position.set(...position);
     },
-    []
   );
 
   const bind = useDrag(
@@ -124,8 +127,10 @@ export function Font(props) {
         e.stopPropagation();
       }}
     >
-      <textGeometry attach="geometry" args={[props.letter, textOptions]} />
-      <meshLambertMaterial attach="material" color={props.color} />
+      <textGeometry attach="geometry" args={[letter, textOptions]} />
+      <meshLambertMaterial attach="material" color={color} />
     </mesh>
   );
 }
+
+export default Text

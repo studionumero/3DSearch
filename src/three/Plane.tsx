@@ -2,9 +2,9 @@
 // cannon
 import * as CANNON from "cannon";
 // context
-import { useCannon } from "../context/useCannon";
+import { useCannon } from "../context/CannonContext";
 
-export default function Plane({ position, bgColor }) {
+const Plane  = ({ position, bg }) => {
   const { ref } = useCannon(
     { bodyProps: { mass: 0 } },
     (body: { addShape; position }) => {
@@ -15,7 +15,9 @@ export default function Plane({ position, bgColor }) {
   return (
     <mesh ref={ref} receiveShadow position={position}>
       <planeBufferGeometry attach="geometry" args={[1000, 1000, 1000, 1000]} />
-      <meshPhongMaterial attach="material" color={bgColor} />
+      <meshPhongMaterial attach="material" color={bg} />
     </mesh>
   );
 }
+
+export default Plane

@@ -1,12 +1,16 @@
-// @ts-nocheck
-import { useState, useEffect, useContext, useRef, createContext } from "react";
+import { useState, useEffect, useContext, useRef, createContext, ReactFragment, FC } from "react";
 // cannon
 import * as CANNON from "cannon";
 // three
 import { useFrame } from "@react-three/fiber";
+// interfaces
+import { DefaultValuesInterface } from "../interfaces/Settings";
 
-const context = createContext();
-export function Provider({ children, gravity }) {
+const CannonContext = createContext(null);
+
+type Props = DefaultValuesInterface & { children: ReactFragment }
+
+const CannonContextProvider : FC<Props> = ({ children, gravity }) => {
   const [world] = useState(() => new CANNON.World());
   useEffect(() => {
     world.broadphase = new CANNON.NaiveBroadphase();
@@ -16,12 +20,12 @@ export function Provider({ children, gravity }) {
 
   // Run world stepper every frame
   useFrame(() => world.step(1 / 30));
-  return <context.Provider value={world} children={children} />;
+  return <CannonContext.Provider value={world} children={children} />;
 }
 
-export function useCannon({ bodyProps: { ...props } }, fn) {
+const useCannon = ({ bodyProps: { ...props } }: { bodyProps: { mass: number; } | { mass: number; }; }, fn: { (body: any): void; (body: { addShape: () => void; position: any; }): void; (arg0: CANNON.Body): void; }) => {
   const ref = useRef();
-  const world = useContext(context);
+  const world = useContext(CannonContext);
   const [body] = useState(() => new CANNON.Body(props));
   useEffect(() => {
     fn(body);
@@ -43,3 +47,5 @@ export function useCannon({ bodyProps: { ...props } }, fn) {
     body,
   };
 }
+
+export { CannonContextProvider, useCannon }

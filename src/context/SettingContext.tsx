@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { createContext, useReducer, useEffect } from "react";
 
-export const SettingContext = createContext();
+const SettingContext = createContext(null);
 
 const defaultValues = {
   type: "Roboto",
-  size: 2.4,
+  fontSize: 2.4,
   bevel: true,
   engine: "https://www.google.com/search",
   gravity: -5.59,
@@ -24,8 +23,8 @@ const initialState = {
   type: !JSON.parse(localStorage.getItem("type"))
     ? defaultValues.type
     : JSON.parse(localStorage.getItem("type")),
-  size: !JSON.parse(localStorage.getItem("size"))
-    ? defaultValues.size
+  fontSize: !JSON.parse(localStorage.getItem("size"))
+    ? defaultValues.fontSize
     : JSON.parse(localStorage.getItem("size")),
   bevel: !JSON.parse(localStorage.getItem("bevel"))
     ? defaultValues.bevel
@@ -74,13 +73,13 @@ const engineOptions = [
   { id: 3, value: "https://duckduckgo.com/" },
 ];
 
-export const ACTIONS = {
+const ACTIONS = {
   INCREMENT: "increment",
   DECREMENT: "decrement",
   SET: "set",
 };
 
-function reducer(state, action) {
+const reducer = (state: { [x: string]: number; }, action: { name: string; type: any; payload: boolean | number | string; }) => {
   // Verify which value we need to update along with its count
   const isType = action.name.includes("type");
   // Select the proper option in context
@@ -115,24 +114,26 @@ function reducer(state, action) {
   }
 }
 
-export default function SettingContextProvider({ children }) {
+const SettingContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   // Payload only contains name of the value
-  const decrement = props => {
+  const decrement = (props: { name: string; }) => {
     dispatch({
       type: ACTIONS.DECREMENT,
       name: props.name,
+      payload: undefined
     });
   };
-  const increment = props => {
+  const increment = (props: { name: string; }) => {
     dispatch({
       type: ACTIONS.INCREMENT,
       name: props.name,
+      payload: undefined
     });
   };
 
-  const setData = props => {
+  const setData = (props: { payload: boolean | number | string; name: string; }) => {
     dispatch({
       type: ACTIONS.SET,
       payload: props.payload,
@@ -142,7 +143,7 @@ export default function SettingContextProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem("type", JSON.stringify(state.type));
-    localStorage.setItem("size", JSON.stringify(state.size));
+    localStorage.setItem("size", JSON.stringify(state.fontSize));
     localStorage.setItem("bevel", JSON.stringify(state.bevel));
     localStorage.setItem("engine", JSON.stringify(state.engine));
     localStorage.setItem("gravity", JSON.stringify(state.gravity));
@@ -155,7 +156,7 @@ export default function SettingContextProvider({ children }) {
     localStorage.setItem("engineCount", JSON.stringify(state.engineCount));
   }, [
     state.type,
-    state.size,
+    state.fontSize,
     state.bevel,
     state.engine,
     state.gravity,
@@ -174,3 +175,7 @@ export default function SettingContextProvider({ children }) {
     </SettingContext.Provider>
   );
 }
+
+export default SettingContextProvider
+
+export { SettingContext, ACTIONS }

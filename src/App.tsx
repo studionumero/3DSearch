@@ -1,24 +1,24 @@
-// @ts-nocheck
-// cannon
-import { Provider } from "./context/useCannon";
 // pages
 import Home from "./pages/Home";
 // components
-import { Font } from "./three/Text";
+import Text from "./three/Text";
 import Plane from "./three/Plane";
 // three
 import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 // react
-import { useState, useContext } from "react";
+import { useState, useContext, FC } from "react";
+// interfaces
+import { SearchInterface } from "./interfaces/Search";
 // context
-import { SettingContext } from "./context/settingContext";
+import { SettingContext } from "./context/SettingContext";
+import { CannonContextProvider } from "./context/CannonContext";
 // nanoid
 import { nanoid } from "nanoid";
 // styles
 import "./index.css";
 
-export default function App() {
+const App = () => {
   const [objects, setObjects] = useState([]);
   const [search, setSearch] = useState("");
   const { state, setData, increment, decrement } = useContext(SettingContext);
@@ -29,7 +29,7 @@ export default function App() {
     setSearch("");
   };
 
-  const key = e => {
+  const key = (e: { keyCode: number; key: { [s: string]: unknown; } | ArrayLike<unknown>; }) => {
     if (
       (e.keyCode >= 48 && e.keyCode <= 90) ||
       (e.keyCode >= 96 && e.keyCode <= 105)
@@ -56,21 +56,20 @@ export default function App() {
 
       setObjects([
         ...objects,
-        <Font
+        <Text
           letter={letter}
           key={nanoid()}
           bevelSize={state.bevelSize}
           bevel={state.bevel}
           thickness={state.thickness}
-          fontSize={state.size}
+          fontSize={state.fontSize}
           type={state.type}
           color={state.color}
           initialPosition={initialPosition}
         />,
       ]);
-      // console.log(objects[0]);
     } else {
-      return null;
+      return;
     }
   };
   return (
@@ -78,23 +77,21 @@ export default function App() {
       <Home
         reset={onReset}
         myKey={key}
-        increment={increment}
-        decrement={decrement}
-        setData={setData}
         search={search}
         setSearch={setSearch}
         objects={objects}
+        increment={increment}
+        decrement={decrement}
+        setData={setData}
         panel={state.panel}
         bevelSize={state.bevelSize}
         bevel={state.bevel}
         thickness={state.thickness}
-        size={state.size}
+        fontSize={state.fontSize}
         brightness={state.brightness}
         gravity={state.gravity}
         type={state.type}
-        color={state.color}
         engine={state.engine}
-        bg={state.bg}
       />
       <ambientLight intensity={state.brightness / 2} />
       <hemisphereLight
@@ -115,14 +112,16 @@ export default function App() {
         shadow-camera-bottom={-10}
         intensity={state.brightness}
       />
-      <Provider gravity={state.gravity}>
+      <CannonContextProvider gravity={state.gravity}>
         <Objects objects={objects} />
-        <Plane position={[0, 0, -2.2]} bgColor={state.bg} />
-      </Provider>
+        <Plane position={[0, 0, -2.2]} bg={state.bg} />
+      </CannonContextProvider>
     </>
   );
 }
 
-function Objects({ objects }) {
+const Objects : FC<SearchInterface> = ({ objects }) => {
   return <>{objects}</>;
 }
+
+export default App
