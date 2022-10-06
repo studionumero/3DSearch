@@ -1,7 +1,6 @@
-import { ReactElement, ReactFragment, FC } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-// slider
 import ReactSlider from "react-slider";
+import { ReactElement, ReactFragment, FC } from "react";
 // interfaces
 import { DefaultValuesInterface, SettingsInterface } from "../interfaces/Settings";
 // styles
@@ -9,7 +8,7 @@ import "../index.css";
 
 type Props = DefaultValuesInterface & SettingsInterface
 
-const Nav : FC<Props> = ({bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, increment, decrement, setData }) => {
+const Nav : FC<Props> = ({ bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, increment, decrement, setData }) => {
   return (
     <section className="absolute right-0 top-0 h-full">
       <NavBar setData={setData} panel={panel} />
@@ -196,7 +195,7 @@ const Settings : FC<Props> = ({
             onChange={value => {
               setData({
                 payload: value,
-                name: "size",
+                name: "fontSize",
               });
             }}
           />

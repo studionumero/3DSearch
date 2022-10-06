@@ -1,7 +1,5 @@
-import { useState, useEffect, useContext, useRef, createContext, ReactFragment, FC } from "react";
-// cannon
 import * as CANNON from "cannon";
-// three
+import { useState, useEffect, useContext, useRef, createContext, ReactFragment, FC } from "react";
 import { useFrame } from "@react-three/fiber";
 // interfaces
 import { DefaultValuesInterface } from "../interfaces/Settings";
@@ -14,7 +12,9 @@ const CannonContextProvider : FC<Props> = ({ children, gravity }) => {
   const [world] = useState(() => new CANNON.World());
   useEffect(() => {
     world.broadphase = new CANNON.NaiveBroadphase();
-    world.solver.iterations = 20;
+    // Determines quality and accuracy of simulation
+    // Stronger gravity requires more iterations
+    world.solver.iterations = 25;
     world.gravity.set(0, 0, gravity);
   }, [world, gravity]);
 

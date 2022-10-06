@@ -1,5 +1,4 @@
 // @ts-nocheck
-// cannon
 import * as CANNON from "cannon";
 // context
 import { useCannon } from "../context/CannonContext";

@@ -17,7 +17,7 @@ git clone https://github.com/glennphil/3DSearch.git && cd 3DSearch && npm i
 Ensure that you're in the correct feature branch that you wish to contribute to by running the following command:
 
 ```
-git checkout (branch name)
+git checkout <branch_name>
 ```
 
 ## Running the tests

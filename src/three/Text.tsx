@@ -1,23 +1,21 @@
 // @ts-nocheck
-import { useState, FC } from "react";
-// cannon
 import * as CANNON from "cannon";
-import { useDrag } from "@use-gesture/react";
-// three
 import * as THREE from "three";
+import { useState, FC } from "react";
+import { useDrag } from "@use-gesture/react";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
-// interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
 // context
 import { useCannon } from "../context/CannonContext";
-// font
+// fonts
 import Roboto from "../fonts/Roboto.json";
 import ComicNeue from "../fonts/ComicNeue.json";
 import Newsreader from "../fonts/Newsreader.json";
 import PressStart2P from "../fonts/PressStart2P.json";
 import Audiowide from "../fonts/Audiowide.json";
+// interfaces
+import { DefaultValuesInterface } from "../interfaces/Settings";
 
 type Props = DefaultValuesInterface & { initialPosition: number[], letter: string }
 

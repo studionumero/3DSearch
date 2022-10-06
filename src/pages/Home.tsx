@@ -1,39 +1,26 @@
-import { ReactFragment, FC } from "react";
-// components
-import Nav from "../components/Nav";
-// three
+import { ReactFragment, ReactElement, FC } from "react";
 import { Html as HTML } from "@react-three/drei";
 // interfaces
-import { DefaultValuesInterface, SettingsInterface } from "../interfaces/Settings";
+import { DefaultValuesInterface } from "../interfaces/Settings";
 import { SearchInterface } from "../interfaces/Search";
 // styles
 import "../index.css";
 
-type Props = DefaultValuesInterface & SettingsInterface & SearchInterface
+type Props = DefaultValuesInterface & SearchInterface & { children: ReactElement }
 
-const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, search, setSearch, myKey, objects, reset, increment, decrement, setData }) => {
-  const handleChange = (event: { target: { value: string } }) => {
-    setSearch([...search, [event.target.value.slice(-1), "key"]]);
-    // console.log(props.search);
-  };
+const Home : FC<Props>  = ({ engine, search, setSearch, myKey, objects, reset, children }) => {
+  
+  // Create an array pairing each input to a nanoid key that matches each object
+  // Goal is to be able to remove objects on backspace event
+  // const handleChange = (event: { target: { value: string } }) => {
+  //   setSearch([...search, [event.target.value.slice(-1), "key"]]);
+  //   console.log(search);
+  // };
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }}>
       <main className="flex flex-col w-full h-full p-2">
-        <Nav
-          increment={increment}
-          decrement={decrement}
-          setData={setData}
-          bevelSize={bevelSize}
-          bevel={bevel}
-          thickness={thickness}
-          fontSize={fontSize}
-          brightness={brightness}
-          gravity={gravity}
-          type={type}
-          engine={engine}
-          panel={panel}
-        />
+        {children}
         <section className="flex grow" />
         <section
           className="flex flex-col 
@@ -41,25 +28,7 @@ const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, 
           h-min 
           self-center justify-self-center"
         >
-          <div
-            className="flex flex-row 
-            items-center self-center 
-            mr-[20px] sm:mr-[20px] md:mr-[45px] 
-            text-[36px] sm:text-[48px] md:text-[64px] 
-            sm:leading-[58px] md:leading-[83px] 
-            font-mono text-center uppercase font-semibold tracking-normal 
-            mb-4 select-none"
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/favicon.svg"}
-              className="h-[36px] sm:h-[48px] md:h-[64px] 
-              sm:mr-[10px] mr-[10px] mb-[-4px] 
-              sm:mb-[-8px] md:mr-[30px] md:mb-[-16px]"
-              alt="3D Logo"
-            />
-            <span className="text-[#F25479]">3d</span>
-            <span className="text-white">Search</span>
-          </div>
+          <Logo />
           <form
             className="flex flex-col gap-y-6"
             method="get"
@@ -80,8 +49,7 @@ const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, 
                 title="Search"
                 role="search"
                 placeholder=""
-                onChange={handleChange}
-                // value={props.search}
+                // onChange={handleChange}
                 aria-label="Search"
                 maxLength={200}
                 onKeyDown={e => myKey(e)}
@@ -90,6 +58,7 @@ const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, 
                 minLength={1}
                 required
               />
+              {/* Display none if searchbar is empty and there are no objects */}
               {search.length === 0 && objects.length === 0 ? (
                 ""
               ) : (
@@ -114,6 +83,28 @@ const Home : FC<Props>  = ({ bevelSize, bevel, thickness, fontSize, brightness, 
     </HTML>
   );
 }
+
+const Logo = () => (
+  <div
+    className="flex flex-row 
+      items-center self-center 
+      mr-[20px] sm:mr-[20px] md:mr-[45px] 
+      text-[36px] sm:text-[48px] md:text-[64px] 
+      sm:leading-[58px] md:leading-[83px] 
+      font-mono text-center uppercase font-semibold tracking-normal 
+      mb-4 select-none"
+  >
+    <img
+      src={process.env.PUBLIC_URL + "/favicon.svg"}
+      className="h-[36px] sm:h-[48px] md:h-[64px] 
+        sm:mr-[10px] mr-[10px] mb-[-4px] 
+        sm:mb-[-8px] md:mr-[30px] md:mb-[-16px]"
+      alt="3D Logo"
+    />
+    <span className="text-[#F25479]">3D</span>
+    <span className="text-white">Search</span>
+  </div>
+)
 
 const SearchBar = (props: { children: ReactFragment }) => (
   <div className="flex flex-row rounded-sm w-full h-12 bg-white px-3.5 py-1 items-center">

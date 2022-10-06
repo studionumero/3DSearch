@@ -1,71 +1,71 @@
-// pages
-import Home from "./pages/Home";
-// components
-import Text from "./three/Text";
-import Plane from "./three/Plane";
-// three
 import * as THREE from "three";
-import { useThree } from "@react-three/fiber";
-// react
 import { useState, useContext, FC } from "react";
-// interfaces
-import { SearchInterface } from "./interfaces/Search";
+import { useThree } from "@react-three/fiber";
+import { nanoid } from "nanoid";
+// components
+import Nav from "./components/Nav";
 // context
 import { SettingContext } from "./context/SettingContext";
 import { CannonContextProvider } from "./context/CannonContext";
-// nanoid
-import { nanoid } from "nanoid";
+// interfaces
+import { SearchInterface } from "./interfaces/Search";
+// pages
+import Home from "./pages/Home";
+// three
+import Plane from "./three/Plane";
+import Text from "./three/Text";
 // styles
 import "./index.css";
 
 const App = () => {
+  // Letter state
   const [objects, setObjects] = useState([]);
+  // Search input state
   const [search, setSearch] = useState("");
   const { state, setData, increment, decrement } = useContext(SettingContext);
   const { mouse, camera } = useThree();
 
   const onReset = () => {
+    // Remove objects 
     setObjects([]);
+    // Set search empty
     setSearch("");
   };
 
-  const key = (e: { keyCode: number; key: { [s: string]: unknown; } | ArrayLike<unknown>; }) => {
+  const key = (e: { keyCode: number; key: string }) => {
     if (
+      // 0 through 9 and a through z
       (e.keyCode >= 48 && e.keyCode <= 90) ||
+      // numpad 0 through numpad 9
       (e.keyCode >= 96 && e.keyCode <= 105)
     ) {
-      var str = "";
-      // Parses event object and returns string
-      for (const [p, val] of Object.entries(e.key)) {
-        str += `${p}:${val}\n`;
-      }
-      // Returns letter in array
-      var letter = str.split(":").pop().toUpperCase();
-      var vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+      const letter = e.key.toUpperCase();
+      // Randomize letter position
+      const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
       vector.unproject(camera);
-      var dir = vector.sub(camera.position).normalize();
-      var distance = -camera.position.z / dir.z;
-      var pos = camera.position.clone().add(dir.multiplyScalar(distance));
-      var Xmax = pos.x * 4;
-      var Xmin = pos.x * -4;
-      var Ymax = pos.y * 2;
-      var Ymin = pos.y * -2;
-      var XcoordVal = Math.floor(Math.random() * (Xmax - Xmin + 1)) + Xmin;
-      var YcoordVal = Math.floor(Math.random() * (Ymax - Ymin + 1)) + Ymin;
+      const dir = vector.sub(camera.position).normalize();
+      const distance = -camera.position.z / dir.z;
+      const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+      const Xmax = pos.x * 4;
+      const Xmin = pos.x * -4;
+      const Ymax = pos.y * 2;
+      const Ymin = pos.y * -2;
+      const XcoordVal = Math.floor(Math.random() * (Xmax - Xmin + 1)) + Xmin;
+      const YcoordVal = Math.floor(Math.random() * (Ymax - Ymin + 1)) + Ymin;
       const initialPosition = [XcoordVal / 4, YcoordVal / 8, 2];
 
       setObjects([
         ...objects,
         <Text
-          letter={letter}
           key={nanoid()}
+          letter={letter}
+          initialPosition={initialPosition}
           bevelSize={state.bevelSize}
           bevel={state.bevel}
           thickness={state.thickness}
           fontSize={state.fontSize}
           type={state.type}
           color={state.color}
-          initialPosition={initialPosition}
         />,
       ]);
     } else {
@@ -80,19 +80,23 @@ const App = () => {
         search={search}
         setSearch={setSearch}
         objects={objects}
-        increment={increment}
-        decrement={decrement}
-        setData={setData}
-        panel={state.panel}
-        bevelSize={state.bevelSize}
-        bevel={state.bevel}
-        thickness={state.thickness}
-        fontSize={state.fontSize}
-        brightness={state.brightness}
-        gravity={state.gravity}
-        type={state.type}
         engine={state.engine}
-      />
+      >
+        <Nav
+          increment={increment}
+          decrement={decrement}
+          setData={setData}
+          bevelSize={state.bevelSize}
+          bevel={state.bevel}
+          thickness={state.thickness}
+          fontSize={state.fontSize}
+          brightness={state.brightness}
+          gravity={state.gravity}
+          type={state.type}
+          engine={state.engine}
+          panel={state.panel}
+        />
+      </Home>
       <ambientLight intensity={state.brightness / 2} />
       <hemisphereLight
         intensity={state.brightness / 2}

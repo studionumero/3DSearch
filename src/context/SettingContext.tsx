@@ -4,21 +4,21 @@ const SettingContext = createContext(null);
 
 const defaultValues = {
   type: "Roboto",
-  fontSize: 2.4,
+  fontSize: 1.8,
   bevel: true,
   engine: "https://www.google.com/search",
   gravity: -5.59,
-  color: "#D2B48C",
+  color: "#f08080",
   bg: "#6E9BA6",
   thickness: 0.52,
   bevelSize: 0.22,
   brightness: 0.49,
-  typeCount: 0,
-  engineCount: 0,
+  typeCount: 0, // Default type counter value
+  engineCount: 0, // Default engine counter value
   panel: false,
 };
 
-// if no key exists in localStorage, set value to defaultValue, else set value to localStorage value
+// Set localstorage value to defaultValue if no key exists, else set value to localStorage value
 const initialState = {
   type: !JSON.parse(localStorage.getItem("type"))
     ? defaultValues.type
@@ -79,7 +79,7 @@ const ACTIONS = {
   SET: "set",
 };
 
-const reducer = (state: { [x: string]: number; }, action: { name: string; type: any; payload: boolean | number | string; }) => {
+const reducer = (state: { [x: string]: number; }, action: { name: string; type: any; payload?: boolean | number | string; }) => {
   // Verify which value we need to update along with its count
   const isType = action.name.includes("type");
   // Select the proper option in context
@@ -108,7 +108,11 @@ const reducer = (state: { [x: string]: number; }, action: { name: string; type: 
         [isType ? "type" : "engine"]: options[decrementedCount].value,
       };
     case ACTIONS.SET:
-      return { ...state, [action.name]: action.payload };
+      return { 
+        ...state, 
+        // Set the new count
+        [action.name]: action.payload 
+      };
     default:
       return initialState;
   }
@@ -117,19 +121,17 @@ const reducer = (state: { [x: string]: number; }, action: { name: string; type: 
 const SettingContextProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Payload only contains name of the value
   const decrement = (props: { name: string; }) => {
     dispatch({
       type: ACTIONS.DECREMENT,
       name: props.name,
-      payload: undefined
     });
   };
+
   const increment = (props: { name: string; }) => {
     dispatch({
       type: ACTIONS.INCREMENT,
       name: props.name,
-      payload: undefined
     });
   };
 
@@ -141,6 +143,7 @@ const SettingContextProvider = ({ children }: any) => {
     });
   };
 
+  // Update localStorage on state change
   useEffect(() => {
     localStorage.setItem("type", JSON.stringify(state.type));
     localStorage.setItem("size", JSON.stringify(state.fontSize));
@@ -154,20 +157,7 @@ const SettingContextProvider = ({ children }: any) => {
     localStorage.setItem("brightness", JSON.stringify(state.brightness));
     localStorage.setItem("typeCount", JSON.stringify(state.typeCount));
     localStorage.setItem("engineCount", JSON.stringify(state.engineCount));
-  }, [
-    state.type,
-    state.fontSize,
-    state.bevel,
-    state.engine,
-    state.gravity,
-    state.color,
-    state.bg,
-    state.thickness,
-    state.bevelSize,
-    state.brightness,
-    state.typeCount,
-    state.engineCount,
-  ]);
+  }, [state]);
 
   return (
     <SettingContext.Provider value={{ state, setData, increment, decrement }}>
