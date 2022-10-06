@@ -1,7 +1,7 @@
 {
   "name": "3DSearch",
-  "version": "0.1.0",
-  "homepage": "https://glennphil.github.io/3DSearch/",
+  "version": "0.1.2",
+  "homepage": "https://3DSearch.github.io/3DSearch/",
   "private": false,
   "dependencies": {
     "@react-three/cannon": "^6.3.0",
