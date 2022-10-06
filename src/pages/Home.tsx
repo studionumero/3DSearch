@@ -8,8 +8,8 @@ import "../index.css";
 
 type Props = DefaultValuesInterface & SearchInterface & { children: ReactElement }
 
-const Home : FC<Props>  = ({ engine, search, setSearch, myKey, objects, reset, children }) => {
-  
+const Home: FC<Props> = ({ engine, search, setSearch, myKey, objects, reset, children }) => {
+
   // Create an array pairing each input to a nanoid key that matches each object
   // Goal is to be able to remove objects on backspace event
   // const handleChange = (event: { target: { value: string } }) => {
@@ -76,7 +76,7 @@ const Home : FC<Props>  = ({ engine, search, setSearch, myKey, objects, reset, c
         </section>
         <section className="flex grow-[2]">
           <div className="absolute bottom-0 right-[49px] h-min pb-2 text-white">
-          <span>3DSearch is an open-source project.</span>
+            <span>3DSearch is an open-source project.</span>
           </div>
         </section>
       </main>

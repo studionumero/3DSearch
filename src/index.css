@@ -65,7 +65,8 @@ body {
   align-self: center;
 }
 
-.customSlider-track, .customSlider-track-disabled {
+.customSlider-track,
+.customSlider-track-disabled {
   height: 3px;
   top: 6px;
   background: var(--track-color);
@@ -79,7 +80,8 @@ body {
   background: var(--disabled-color);
 }
 
-.customSlider-thumb, .customSlider-thumb-disabled {
+.customSlider-thumb,
+.customSlider-thumb-disabled {
   width: 14px;
   height: 14px;
   border-radius: 1px;

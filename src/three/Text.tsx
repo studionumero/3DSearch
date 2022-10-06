@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import * as CANNON from "cannon";
 import * as THREE from "three";
@@ -19,7 +20,7 @@ import { DefaultValuesInterface } from "../interfaces/Settings";
 
 type Props = DefaultValuesInterface & { initialPosition: number[], letter: string }
 
-const Text : FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, bevelSize, letter, color }) => {
+const Text: FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, bevelSize, letter, color }) => {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);

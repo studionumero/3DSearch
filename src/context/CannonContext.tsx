@@ -8,7 +8,7 @@ const CannonContext = createContext(null);
 
 type Props = DefaultValuesInterface & { children: ReactFragment }
 
-const CannonContextProvider : FC<Props> = ({ children, gravity }) => {
+const CannonContextProvider: FC<Props> = ({ children, gravity }) => {
   const [world] = useState(() => new CANNON.World());
   useEffect(() => {
     world.broadphase = new CANNON.NaiveBroadphase();
@@ -19,7 +19,7 @@ const CannonContextProvider : FC<Props> = ({ children, gravity }) => {
   }, [world, gravity]);
 
   // Run world stepper every frame
-  useFrame(() => world.step(1 / 30));
+  useFrame(() => world.step(1 / 25));
   return <CannonContext.Provider value={world} children={children} />;
 }
 

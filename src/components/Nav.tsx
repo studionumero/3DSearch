@@ -8,7 +8,7 @@ import "../index.css";
 
 type Props = DefaultValuesInterface & SettingsInterface
 
-const Nav : FC<Props> = ({ bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, increment, decrement, setData }) => {
+const Nav: FC<Props> = ({ bevelSize, bevel, thickness, fontSize, brightness, gravity, type, engine, panel, increment, decrement, setData }) => {
   return (
     <section className="absolute right-0 top-0 h-full">
       <NavBar setData={setData} panel={panel} />
@@ -42,7 +42,7 @@ const Nav : FC<Props> = ({ bevelSize, bevel, thickness, fontSize, brightness, gr
   );
 }
 
-const NavBar : FC<Props> = ({ setData, panel }) => {
+const NavBar: FC<Props> = ({ setData, panel }) => {
   return (
     <nav className="relative flex flex-row justify-end py-1.5 px-3 mt-[1px]">
       <section className="flex flex-col gap-1.5">
@@ -96,7 +96,7 @@ const SideBar = (props: { top: string; title: string; children: ReactElement }) 
   </section>
 );
 
-const Settings : FC<Props> = ({
+const Settings: FC<Props> = ({
   increment,
   decrement,
   type,
@@ -112,7 +112,7 @@ const Settings : FC<Props> = ({
 
   // slices off start and end of search engine url 
   const searchEngineSlice = (engine: string) => {
-    let string = engine
+    const string = engine
       .split("//" || ".")
       .pop()
       .split(".com")

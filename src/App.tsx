@@ -124,7 +124,7 @@ const App = () => {
   );
 }
 
-const Objects : FC<SearchInterface> = ({ objects }) => {
+const Objects: FC<SearchInterface> = ({ objects }) => {
   return <>{objects}</>;
 }
 

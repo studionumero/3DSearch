@@ -85,10 +85,14 @@ const reducer = (state: { [x: string]: number; }, action: { name: string; type: 
   // Select the proper option in context
   const options = isType ? typeOptions : engineOptions;
 
+  // Increment the count for use in the value and type setting
+  const incrementedCount = (state[action.name] + 1) % options.length;
+
+  // Decrement the count for use in the value and type setting
+  const decrementedCount = (state[action.name] - 1 + options.length) % options.length;
+
   switch (action.type) {
     case ACTIONS.INCREMENT:
-      // Increment the count for use in the value and type setting
-      const incrementedCount = (state[action.name] + 1) % options.length;
       return {
         ...state,
         // Set the new count
@@ -97,9 +101,6 @@ const reducer = (state: { [x: string]: number; }, action: { name: string; type: 
         [isType ? "type" : "engine"]: options[incrementedCount].value,
       };
     case ACTIONS.DECREMENT:
-      // Decrement the count for use in the value and type setting
-      const decrementedCount =
-        (state[action.name] - 1 + options.length) % options.length;
       return {
         ...state,
         // Set the new count
@@ -108,10 +109,10 @@ const reducer = (state: { [x: string]: number; }, action: { name: string; type: 
         [isType ? "type" : "engine"]: options[decrementedCount].value,
       };
     case ACTIONS.SET:
-      return { 
-        ...state, 
+      return {
+        ...state,
         // Set the new count
-        [action.name]: action.payload 
+        [action.name]: action.payload
       };
     default:
       return initialState;
