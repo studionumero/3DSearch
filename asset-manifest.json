@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/3DSearch/static/css/main.c4cc48fb.css",
+    "main.js": "/3DSearch/static/js/main.9fc536e3.js",
+    "index.html": "/3DSearch/index.html",
+    "main.c4cc48fb.css.map": "/3DSearch/static/css/main.c4cc48fb.css.map",
+    "main.9fc536e3.js.map": "/3DSearch/static/js/main.9fc536e3.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c4cc48fb.css",
+    "static/js/main.9fc536e3.js"
+  ]
+}
