@@ -2,6 +2,7 @@ import { ReactFragment, FC } from "react";
 import { Html as HTML } from "@react-three/drei";
 // interfaces
 import { SearchInterface } from "../interfaces/Search";
+import { Search, Clear } from '@mui/icons-material'
 
 const Home: FC<SearchInterface> = ({ search, useKey, objects, reset }) => {
 
@@ -26,7 +27,7 @@ const Home: FC<SearchInterface> = ({ search, useKey, objects, reset }) => {
           action="https://www.google.com/search"
         >
           <SearchBar>
-            <InputIcon icon="search" fontSize="22px" />
+            <Search sx={{ fontSize: "24px", color: "#84AFBA" }} />
             <input
               type="search"
               className="form-control
@@ -89,15 +90,6 @@ const SearchBar = (props: { children: ReactFragment }) => (
   </div>
 );
 
-const InputIcon = (props: { fontSize: string; icon: string }) => (
-  <span
-    className="material-symbols-sharp"
-    style={{ color: "#84AFBA", fontSize: props.fontSize }}
-  >
-    {props.icon}
-  </span>
-);
-
 const Button: FC<SearchInterface> = ({ search, objects, reset }) => {
   switch (true) {
     case search.length !== 0:
@@ -109,7 +101,7 @@ const Button: FC<SearchInterface> = ({ search, objects, reset }) => {
           aria-label="clear"
           style={{ height: "24px" }}
         >
-          <InputIcon icon="close" fontSize="24px" />
+          <Clear sx={{ fontSize: "24px", color: "#84AFBA" }} />
         </button>
       );
     default:

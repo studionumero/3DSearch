@@ -5,7 +5,7 @@ import * as THREE from "three";
 // interfaces
 import { SearchInterface } from "../interfaces/Search";
 // components
-import Text from "../three/Text";
+import { Text } from "../components/Text";
 
 type Props = SearchInterface & { mouse: any, camera: any };
 
@@ -20,12 +20,6 @@ const useKeyEvent: FC<Props> = ({ e, objects, setObjects, mouse, camera }) => {
           key={nanoid()}
           letter={letter}
           initialPosition={randomizePosition({ mouse, camera })}
-          bevelSize={0.22}
-          bevel={true}
-          thickness={0.52}
-          fontSize={1.8}
-          type="Roboto"
-          color="#f08080"
         />,
       ]);
     }

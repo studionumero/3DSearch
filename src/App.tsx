@@ -1,13 +1,12 @@
-import { useState, useContext, FC } from "react";
+import { useState, FC } from "react";
 // context
-import { SettingContext } from "./context/SettingContext";
 import { CannonContextProvider } from "./context/CannonContext";
 // interfaces
 import { SearchInterface } from "./interfaces/Search";
 // pages
 import Home from "./pages/Home";
 // three
-import Plane from "./three/Plane";
+import Plane from "./components/Plane";
 import { useThree } from "@react-three/fiber";
 // hooks
 import { useKeyEvent } from "./hooks/useKeyEvent";
@@ -15,8 +14,9 @@ import { useKeyEvent } from "./hooks/useKeyEvent";
 const App = () => {
   const [objects, setObjects] = useState([]);
   const [search, setSearch] = useState("");
-  const { state } = useContext(SettingContext);
+
   const { mouse, camera } = useThree();
+  
   const onReset = () => {
     setObjects([]);
     setSearch("");
@@ -31,12 +31,12 @@ const App = () => {
         setSearch={setSearch}
         objects={objects}
       />
-      <ambientLight intensity={state.brightness / 2} />
+      <ambientLight intensity={0.11} />
       <hemisphereLight
-        intensity={state.brightness / 2}
+        intensity={0.11}
         position={[0, 30, 15]}
-        color={state.bg}
-        groundColor={state.color}
+        color="#6E9BA6"
+        groundColor="#f08080"
       />
       <directionalLight
         position={[0, 5, 15]}
@@ -48,11 +48,11 @@ const App = () => {
         shadow-camera-right={15}
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
-        intensity={state.brightness}
+        intensity={0.49}
       />
-      <CannonContextProvider gravity={state.gravity}>
+      <CannonContextProvider gravity={-5.59}>
         <Objects objects={objects} />
-        <Plane position={[0, 0, -2.2]} bg={state.bg} />
+        <Plane position={[0, 0, -2.2]} bg="#6E9BA6" />
       </CannonContextProvider>
     </>
   );
@@ -62,4 +62,4 @@ const Objects: FC<SearchInterface> = ({ objects }) => {
   return <>{objects}</>;
 }
 
-export default App
+export { App }

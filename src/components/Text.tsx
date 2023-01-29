@@ -1,56 +1,42 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-import * as CANNON from "cannon";
-import * as THREE from "three";
 import { useState, FC } from "react";
-import { useDrag } from "@use-gesture/react";
+// three
+import * as THREE from "three";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
+// cannon
+import * as CANNON from "cannon";
+import { useDrag } from "@use-gesture/react";
 // context
 import { useCannon } from "../context/CannonContext";
 // fonts
 import Roboto from "../fonts/Roboto.json";
-import ComicNeue from "../fonts/ComicNeue.json";
-import Newsreader from "../fonts/Newsreader.json";
-import PressStart2P from "../fonts/PressStart2P.json";
-import Audiowide from "../fonts/Audiowide.json";
-// interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
 
-type Props = DefaultValuesInterface & { initialPosition: number[], letter: string }
+type Props = { 
+  initialPosition: number[], 
+  letter: string 
+}
 
-const Text: FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, bevelSize, letter, color }) => {
+const Text: FC<Props> = ({ initialPosition, letter }) => {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 
-  const fontCheck = () => {
-    if (type === "Roboto") {
-      return Roboto;
-    } else if (type === "Press Start") {
-      return PressStart2P;
-    } else if (type === "Audiowide") {
-      return Audiowide;
-    } else if (type === "ComicNeue") {
-      return ComicNeue;
-    } else if (type === "Newsreader") {
-      return Newsreader;
-    }
-  }
+  const font = new FontLoader().parse(Roboto);
 
-  const font = new FontLoader().parse(fontCheck());
   const textOptions = {
     font,
-    size: fontSize,
-    height: thickness,
+    size: 1.8,
+    height: 0.52,
     curveSegments: 4,
-    bevelEnabled: bevel,
-    bevelThickness: bevel ? 0.2 : 0,
-    bevelSize: bevel ? bevelSize : 0,
-    bevelOffset: bevel ? -0.01 : 0,
-    bevelSegments: bevel ? 6 : 0,
+    bevelEnabled: true,
+    bevelThickness: 0.22,
+    bevelSize: 0.22,
+    bevelOffset: -0.01,
+    bevelSegments: 6,
   };
 
   const letterGeometry = new TextGeometry(letter, textOptions);
@@ -127,9 +113,9 @@ const Text: FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, be
       }}
     >
       <textGeometry attach="geometry" args={[letter, textOptions]} />
-      <meshLambertMaterial attach="material" color={color} />
+      <meshLambertMaterial attach="material" color="#f08080" />
     </mesh>
   );
 }
 
-export default Text
+export { Text }

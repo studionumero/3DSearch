@@ -1,12 +1,10 @@
 import * as CANNON from "cannon";
 import { useState, useEffect, useContext, useRef, createContext, ReactFragment, FC } from "react";
 import { useFrame } from "@react-three/fiber";
-// interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
+
+type Props = { children: ReactFragment, gravity: number }
 
 const CannonContext = createContext(null);
-
-type Props = DefaultValuesInterface & { children: ReactFragment }
 
 const CannonContextProvider: FC<Props> = ({ children, gravity }) => {
   const [world] = useState(() => new CANNON.World());
@@ -33,14 +31,6 @@ const useCannon = ({ bodyProps: { ...props } }: { bodyProps: { mass: number; } |
     // Remove body on unmount
     return () => world.removeBody(body);
   }, [body]);
-
-  useFrame(() => {
-    if (ref.current) {
-      // Transport cannon physics into the referenced threejs object
-      // ref.current.position.copy(body.position)
-      // ref.current.quaternion.copy(body.quaternion)
-    }
-  });
 
   return {
     ref,
