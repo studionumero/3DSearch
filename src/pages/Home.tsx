@@ -1,14 +1,9 @@
-import { ReactFragment, ReactElement, FC } from "react";
+import { ReactFragment, FC } from "react";
 import { Html as HTML } from "@react-three/drei";
 // interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
 import { SearchInterface } from "../interfaces/Search";
-// styles
-import "../index.css";
 
-type Props = DefaultValuesInterface & SearchInterface & { children: ReactElement }
-
-const Home: FC<Props> = ({ engine, search, setSearch, myKey, objects, reset, children }) => {
+const Home: FC<SearchInterface> = ({ search, useKey, objects, reset }) => {
 
   // Create an array pairing each input to a nanoid key that matches each object
   // Goal is to be able to remove objects on backspace event
@@ -19,66 +14,48 @@ const Home: FC<Props> = ({ engine, search, setSearch, myKey, objects, reset, chi
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }}>
-      <main className="flex flex-col w-full h-full p-2">
-        {children}
-        <section className="flex grow" />
-        <section
-          className="flex flex-col 
-          w-[300px] sm:w-[400px] md:w-[526px] 
-          h-min 
-          self-center justify-self-center"
+      <main className="flex flex-col 
+        w-[300px] sm:w-[400px] md:w-[526px] h-full 
+        p-2 mx-auto mt-[-60px]
+        justify-center align-center"
+      >
+        <Logo />
+        <form
+          className="flex flex-col gap-y-6"
+          method="get"
+          action="https://www.google.com/search"
         >
-          <Logo />
-          <form
-            className="flex flex-col gap-y-6"
-            method="get"
-            action={engine}
-          >
-            <SearchBar>
-              <InputIcon icon="search" fontSize="22px" />
-              <input
-                type="search"
-                className="form-control
+          <SearchBar>
+            <InputIcon icon="search" fontSize="22px" />
+            <input
+              type="search"
+              className="form-control
                   block
                   w-full
                   px-3 py-1.5 m-0
                   text-base font-normal text-gray-700
                   outline-none"
-                name="q"
-                id="search"
-                title="Search"
-                role="search"
-                placeholder=""
-                // onChange={handleChange}
-                aria-label="Search"
-                maxLength={200}
-                onKeyDown={e => myKey(e)}
-                autoComplete="off"
-                spellCheck="false"
-                minLength={1}
-                required
-              />
-              {/* Display none if searchbar is empty and there are no objects */}
-              {search.length === 0 && objects.length === 0 ? (
-                ""
-              ) : (
-                <button
-                  onClick={reset}
-                  type="reset"
-                  aria-label="clear"
-                  style={{ height: "24px" }}
-                >
-                  <InputIcon icon="close" fontSize="24px" />
-                </button>
-              )}
-            </SearchBar>
-          </form>
-        </section>
-        <section className="flex grow-[2]">
-          <div className="absolute bottom-0 right-[49px] h-min pb-2 text-white">
-            <span>3DSearch is an open-source project.</span>
-          </div>
-        </section>
+              name="q"
+              id="search"
+              title="Search"
+              role="search"
+              placeholder=""
+              // onChange={handleChange}
+              aria-label="Search"
+              maxLength={200}
+              onKeyDown={e => useKey(e)}
+              autoComplete="off"
+              spellCheck="false"
+              minLength={1}
+              required
+            />
+            <Button
+              reset={reset}
+              objects={objects}
+              search={search}
+            />
+          </SearchBar>
+        </form>
       </main>
     </HTML>
   );
@@ -120,5 +97,24 @@ const InputIcon = (props: { fontSize: string; icon: string }) => (
     {props.icon}
   </span>
 );
+
+const Button: FC<SearchInterface> = ({ search, objects, reset }) => {
+  switch (true) {
+    case search.length !== 0:
+    case objects.length !== 0:
+      return (
+        <button
+          onClick={reset}
+          type="reset"
+          aria-label="clear"
+          style={{ height: "24px" }}
+        >
+          <InputIcon icon="close" fontSize="24px" />
+        </button>
+      );
+    default:
+      return null;
+  }
+}
 
 export default Home
