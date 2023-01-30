@@ -24,7 +24,7 @@ const Surface: FC<Props> = ({ position, bg }) => {
 
   return (
     <mesh ref={ref} receiveShadow position={position}>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000, 1000, 1000]} />
+      <planeGeometry attach="geometry" args={[1000, 1000, 1000, 1000]} />
       <meshPhongMaterial attach="material" color={bg} />
     </mesh>
   );
