@@ -13,15 +13,16 @@ import { useDrag } from "@use-gesture/react";
 import { useCannon } from "../context/CannonContext";
 // fonts
 import Roboto from "../fonts/Roboto.json";
+// hooks
+import { useRandomPos } from "../hooks/useRandomPos";
 
 type Props = { 
-  initialPosition: number[], 
   letter: string 
 }
 
-const Text: FC<Props> = ({ initialPosition, letter }) => {
+const Text: FC<Props> = ({ letter }: string) => {
   const { size, viewport } = useThree();
-  const [position, setPosition] = useState(initialPosition);
+  const [position, setPosition] = useState(useRandomPos());
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 

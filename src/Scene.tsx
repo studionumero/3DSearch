@@ -5,7 +5,7 @@ import { CannonContextProvider } from "./context/CannonContext";
 // three
 import { Canvas } from "@react-three/fiber";
 // components
-import { Plane } from "./components/Plane";
+import { Surface } from "./components/Surface";
 
 const Scene = () => {
   const [objects, setObjects] = useState([]);
@@ -41,7 +41,7 @@ const Scene = () => {
       />
       <CannonContextProvider gravity={-5.59}>
         <Objects objects={objects} />
-        <Plane position={[0, 0, -2.2]} bg="#6E9BA6" />
+        <Surface position={[0, 0, -2.2]} bg="#6E9BA6" />
       </CannonContextProvider>
     </Canvas>
   );

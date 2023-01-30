@@ -10,7 +10,7 @@ import { useCaretPosition } from 'react-use-caret-position';
 import { useKeyEvent } from "./hooks/useKeyEvent";
 
 const App: FC<SearchInterface> = ({ objects, setObjects }) => {
-  const { ref, start, end, updateCaret } = useCaretPosition();
+  // const { ref, start, end, updateCaret } = useCaretPosition();
   const [search, setSearch] = useState("");
 
   const reset = () => {
@@ -46,7 +46,7 @@ const App: FC<SearchInterface> = ({ objects, setObjects }) => {
             title="Search"
             aria-label="Search"
             placeholder=""
-            ref={ref}
+            // ref={ref}
             maxLength={200}
             onKeyDown={e => useKeyEvent({ e, objects, setObjects })}
             autoComplete="off"
