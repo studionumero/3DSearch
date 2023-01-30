@@ -1,52 +1,42 @@
 import { FC } from "react";
 import { nanoid } from "nanoid";
-// three
-import * as THREE from "three";
 // interfaces
 import { SearchInterface } from "../interfaces/Search";
 // components
 import { Text } from "../components/Text";
+// hooks
+import { useRandomPos } from "./useRandomPos";
 
-type Props = SearchInterface & { mouse: any, camera: any };
-
-const useKeyEvent: FC<Props> = ({ e, objects, setObjects, mouse, camera }) => {
+const useKeyEvent: FC<SearchInterface> = ({ e, objects, setObjects }) => {
   switch (true) {
     case (e.keyCode >= 48 && e.keyCode <= 90):
     case (e.keyCode >= 96 && e.keyCode <= 105): {
-      const letter = e.key.toUpperCase();
       setObjects([
         ...objects,
         <Text
           key={nanoid()}
-          letter={letter}
-          initialPosition={randomizePosition({ mouse, camera })}
-        />,
+          letter={e.key.toUpperCase()}
+          // initialPosition={useRandomPos()}
+          initialPosition={[1, 1, 2]}
+        />
       ]);
+    }
+      break;
+    case (e.keyCode == 8): {
+      objects.splice(-1);
+      setObjects([...objects]);
+    }
+      break;
+    case (e.keyCode == 46): {
+      objects.splice(-1);
+      setObjects([...objects]);
     }
       break;
     default:
       return null;
   }
+
+  return;
 };
-
-const randomizePosition = ({ mouse, camera }: any) => {
-  const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
-  vector.unproject(camera);
-
-  const coord = vector.sub(camera.position).normalize();
-  const distance = -camera.position.z / coord.z;
-  const position = camera.position.clone().add(coord.multiplyScalar(distance));
-
-  const base = 4;
-
-  const Xmax = position.x * base;
-  const Xmin = position.x * base * -1;
-  const Ymax = position.y * base;
-  const Ymin = position.y * base * -1;
-  const X = Math.floor(Math.random() * (Xmax - Xmin + 1)) + Xmin;
-  const Y = Math.floor(Math.random() * (Ymax - Ymin + 1)) + Ymin;
-
-  return [X / base, Y / base, 2];
-}
 
 export { useKeyEvent }

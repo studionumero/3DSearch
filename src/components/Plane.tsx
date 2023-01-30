@@ -20,4 +20,4 @@ const Plane = ({ position, bg }) => {
   );
 }
 
-export default Plane
+export { Plane }
