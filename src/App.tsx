@@ -4,21 +4,43 @@ import { Html as HTML } from "@react-three/drei";
 // interfaces
 import { SearchInterface } from "./interfaces/Search";
 import { Search, Clear } from '@mui/icons-material';
-import { useCaret } from "./hooks/useCaret";
-import { useCaretPosition } from 'react-use-caret-position';
 // hooks
 import { useKeyEvent } from "./hooks/useKeyEvent";
 
 const App: FC<SearchInterface> = ({ objects, setObjects }) => {
-  // const { ref, start, end, updateCaret } = useCaretPosition();
-  const [search, setSearch] = useState("");
+
+interface simpleInt {
+  letter: string;
+  key: string;
+}
+
+type simpleType = simpleInt[];
+
+  const [search, setSearch] = useState<simpleType>([]);
 
   const reset = () => {
     setObjects([]);
-    setSearch("");
+    setSearch([]);
   };
 
-  // useCaret(start, end, updateCaret);
+  const result = search.map(search => {
+    return search.letter;
+  }).join("");
+
+  console.log(search);
+  // console.log(objects)
+
+  const [startCaret, setStartCaret] = useState<number | undefined>();
+  const [endCaret, setEndCaret] = useState<number | undefined>();
+
+  const handleOnSelect = (event: React.SyntheticEvent<HTMLDivElement, Event>) => {
+      const target = event.target as HTMLInputElement;
+      setStartCaret(target.selectionStart);
+      setEndCaret(target.selectionEnd);
+  }
+
+  console.log('Caret start at: ', startCaret);
+  console.log('Caret end at: ', endCaret);
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }}>
@@ -46,9 +68,12 @@ const App: FC<SearchInterface> = ({ objects, setObjects }) => {
             title="Search"
             aria-label="Search"
             placeholder=""
-            // ref={ref}
+            value={result}
             maxLength={200}
-            onKeyDown={e => useKeyEvent({ e, objects, setObjects })}
+            onKeyUp={(event) => handleOnSelect(event)}
+            onSelect={(event) => handleOnSelect(event)}
+            onChange={(event) => handleOnSelect(event)}
+            onKeyDown={e => { useKeyEvent({ startCaret, endCaret, search, setSearch, e, objects, setObjects })}}
             autoComplete="off"
             spellCheck="false"
             minLength={1}

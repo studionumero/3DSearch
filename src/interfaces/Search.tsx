@@ -2,7 +2,9 @@ import { KeyboardEvent, MouseEventHandler } from "react";
 
 export interface SearchInterface {
   e?: any;
-  search?: string;
+  search?: any[];
+  startCaret?: number;
+  endCaret?: number;
   setSearch?: (arg0: any) => void,
   objects?: any[],
   setObjects?: any;
