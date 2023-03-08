@@ -7,7 +7,7 @@ export interface SearchInterface {
   endCaret?: number;
   setSearch?: (arg0: any) => void,
   objects?: any[],
-  setObjects?: any;
+  setObjects?: (arg0: any) => void,
   useKey?: (arg0: KeyboardEvent<HTMLInputElement>) => void,
   reset?: MouseEventHandler<HTMLButtonElement>,
 }

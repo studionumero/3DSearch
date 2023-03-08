@@ -19,6 +19,7 @@
     "cannon": "^0.6.2",
     "concurrently": "^7.6.0",
     "gh-pages": "^5.0.0",
+    "lodash": "^4.17.21",
     "nanoid": "^4.0.0",
     "postcss-cli": "^10.1.0",
     "react": "^18.2.0",
@@ -58,6 +59,7 @@
   "devDependencies": {
     "@types/autoprefixer": "^10.2.0",
     "@types/cannon": "^0.1.8",
+    "@types/lodash": "^4.14.191",
     "@types/three": "^0.148.1",
     "@typescript-eslint/eslint-plugin": "^5.49.0",
     "@typescript-eslint/parser": "^5.49.0",

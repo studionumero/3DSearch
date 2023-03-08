@@ -7,40 +7,33 @@ import { Search, Clear } from '@mui/icons-material';
 // hooks
 import { useKeyEvent } from "./hooks/useKeyEvent";
 
-const App: FC<SearchInterface> = ({ objects, setObjects }) => {
-
-interface simpleInt {
+type Props = {
   letter: string;
   key: string;
 }
 
-type simpleType = simpleInt[];
-
-  const [search, setSearch] = useState<simpleType>([]);
+const App: FC<SearchInterface> = ({ objects, setObjects }) => {
+  const [search, setSearch] = useState<Props[]>([]);
+  const [startCaret, setStartCaret] = useState(0);
+  const [endCaret, setEndCaret] = useState(0);
 
   const reset = () => {
     setObjects([]);
     setSearch([]);
   };
 
-  const result = search.map(search => {
-    return search.letter;
-  }).join("");
+  console.log("search: ", search);
+  console.log("objects: ", objects)
 
-  console.log(search);
-  // console.log(objects)
-
-  const [startCaret, setStartCaret] = useState<number | undefined>();
-  const [endCaret, setEndCaret] = useState<number | undefined>();
 
   const handleOnSelect = (event: React.SyntheticEvent<HTMLDivElement, Event>) => {
-      const target = event.target as HTMLInputElement;
-      setStartCaret(target.selectionStart);
-      setEndCaret(target.selectionEnd);
+    const target = event.target as HTMLInputElement;
+    setStartCaret(target.selectionStart);
+    setEndCaret(target.selectionEnd);
   }
 
-  console.log('Caret start at: ', startCaret);
-  console.log('Caret end at: ', endCaret);
+  // console.log('Caret start at: ', startCaret);
+  // console.log('Caret end at: ', endCaret);
 
   return (
     <HTML center style={{ width: "100vw", height: "100vh" }}>
@@ -68,12 +61,9 @@ type simpleType = simpleInt[];
             title="Search"
             aria-label="Search"
             placeholder=""
-            value={result}
             maxLength={200}
-            onKeyUp={(event) => handleOnSelect(event)}
             onSelect={(event) => handleOnSelect(event)}
-            onChange={(event) => handleOnSelect(event)}
-            onKeyDown={e => { useKeyEvent({ startCaret, endCaret, search, setSearch, e, objects, setObjects })}}
+            onKeyDown={e => { useKeyEvent({ startCaret, endCaret, search, setSearch, e, objects, setObjects }) }}
             autoComplete="off"
             spellCheck="false"
             minLength={1}
