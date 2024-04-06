@@ -22,10 +22,10 @@ const options = {
   color: "#f08080",
   size: 1.0,
   depth: 0.25,
-  curveSegments: 2,
+  curveSegments: 10,
   bevelEnabled: true,
-  bevelSize: 0.15,
-  bevelThickness: 0.2,
+  bevelSize: 0.1,
+  bevelThickness: 0.1,
   bevelOffset: 0.0,
   bevelSegments: 4,
 }

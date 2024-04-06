@@ -14,8 +14,7 @@ export default function Home() {
     <main>
       <Search />
       <Canvas
-        shadows
-        dpr={[2, 1]}
+      shadows
         camera={{ position: [0, 0, 10], fov: 45 }}
         style={{ position: "absolute" }}
         className="z-0"
@@ -58,7 +57,7 @@ const Plane = () => {
 
   return (
     <RigidBody position={[0, 0, 0]} lockTranslations={true} lockRotations={true} name="plane">
-      <Box scale={[viewport.width, viewport.height, 1]} />
+      <Box scale={[viewport.width, viewport.height, 1]} receiveShadow />
     </RigidBody>
   )
 }
@@ -68,12 +67,13 @@ const Light = () => {
 
   return (
     <>
-      <ambientLight intensity={intensity / 2} />
+      <ambientLight intensity={intensity / 2} castShadow />
       <hemisphereLight
         intensity={intensity / 2}
         position={[0, 30, 15]}
         color="#6E9BA6"
         groundColor="#f08080"
+        castShadow
       />
       <directionalLight
         position={[0, 5, 15]}

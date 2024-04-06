@@ -13,7 +13,12 @@ export const Form = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit = () => formRef.current?.submit();
-  const { characters, updateCharacters, query, updateQuery, resetSearch } = useStore();
+  const { characters, updateCharacters, query, updateQuery, selection, updateSelection, resetSearch } = useStore();
+
+  // const handleOnSelect = (event: React.SyntheticEvent<HTMLDivElement, Event>) => {
+  //   const target = event.target as HTMLInputElement;
+  //   updateSelection({start: target.selectionStart, end: target.selectionEnd});
+  // }
 
   return (
     <form
@@ -37,8 +42,9 @@ export const Form = () => {
             px-3 py-1.5 m-0
             text-base font-normal text-gray-700
             outline-none"
+          // onSelect={(event) => handleOnSelect(event)}
           value={query}
-          onKeyDown={e => useKeyEvent({ e, characters, updateCharacters, query, updateQuery })}
+          onKeyDown={e => useKeyEvent({ e, characters, updateCharacters, query, updateQuery, selection })}
           {...register("q", { required: true, minLength: 1, maxLength: 200 })}
         />
         <ClearButton
