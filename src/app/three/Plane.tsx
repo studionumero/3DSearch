@@ -1,10 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import * as CANNON from "cannon";
 // context
-import { useCannon } from "../context/CannonContext";
+import { useCannon } from "../../context/CannonContext";
 
-const Plane = ({ position, bg }) => {
+export const Plane = ({ position, bg }) => {
   const { ref } = useCannon(
     { bodyProps: { mass: 0 } },
     (body: { addShape; position }) => {
@@ -19,5 +17,3 @@ const Plane = ({ position, bg }) => {
     </mesh>
   );
 }
-
-export default Plane

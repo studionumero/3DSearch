@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 #root {
   width: 100vw;
@@ -55,48 +57,4 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .lock-icon-disabled {
   color: var(--disabled-color);
-}
-
-/*------------------------------------*\
-  #REACT-SLIDER-CUSTOMIZATION
-\*------------------------------------*/
-
-.customSlider {
-  display: flex;
-  width: 100%;
-  height: 14px;
-  max-width: 300px;
-  align-self: center;
-}
-
-.customSlider-track,
-.customSlider-track-disabled {
-  height: 3px;
-  top: 6px;
-  background: var(--track-color);
-}
-
-.customSlider-track.customSlider-track-0 {
-  background: var(--main-color);
-}
-
-.customSlider-track-disabled.customSlider-track-0 {
-  background: var(--disabled-color);
-}
-
-.customSlider-thumb,
-.customSlider-thumb-disabled {
-  width: 14px;
-  height: 14px;
-  border-radius: 1px;
-  cursor: pointer;
-  outline: none;
-}
-
-.customSlider-thumb {
-  background: var(--main-color);
-}
-
-.customSlider-thumb-disabled {
-  background: var(--disabled-thumb);
 }

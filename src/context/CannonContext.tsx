@@ -1,14 +1,10 @@
 import * as CANNON from "cannon";
-import { useState, useEffect, useContext, useRef, createContext, ReactFragment, FC } from "react";
+import { useState, useEffect, useContext, useRef, createContext } from "react";
 import { useFrame } from "@react-three/fiber";
-// interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
 
 const CannonContext = createContext(null);
 
-type Props = DefaultValuesInterface & { children: ReactFragment }
-
-const CannonContextProvider: FC<Props> = ({ children, gravity }) => {
+const CannonContextProvider = ({ children, gravity }) => {
   const [world] = useState(() => new CANNON.World());
   useEffect(() => {
     world.broadphase = new CANNON.NaiveBroadphase();

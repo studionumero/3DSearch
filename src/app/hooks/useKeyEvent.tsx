@@ -1,31 +1,19 @@
-import { FC } from "react";
 import { nanoid } from "nanoid";
 // three
 import * as THREE from "three";
-// interfaces
-import { SearchInterface } from "../interfaces/Search";
-// components
-import Text from "../three/Text";
+import { Text } from "../three/Text";
 
-type Props = SearchInterface & { mouse: any, camera: any };
-
-const useKeyEvent: FC<Props> = ({ e, objects, setObjects, mouse, camera }) => {
+export const useKeyEvent = ({ e, characters, updateCharacters, pointer, camera }) => {
   switch (true) {
     case (e.keyCode >= 48 && e.keyCode <= 90):
     case (e.keyCode >= 96 && e.keyCode <= 105): {
       const letter = e.key.toUpperCase();
-      setObjects([
-        ...objects,
+      updateCharacters([
+        ...characters,
         <Text
           key={nanoid()}
           letter={letter}
-          initialPosition={randomizePosition({ mouse, camera })}
-          bevelSize={0.22}
-          bevel={true}
-          thickness={0.52}
-          fontSize={1.8}
-          type="Roboto"
-          color="#f08080"
+          initialPosition={randomizePosition({ pointer, camera })}
         />,
       ]);
     }
@@ -35,8 +23,8 @@ const useKeyEvent: FC<Props> = ({ e, objects, setObjects, mouse, camera }) => {
   }
 };
 
-const randomizePosition = ({ mouse, camera }: any) => {
-  const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+const randomizePosition = ({ pointer, camera }: any) => {
+  const vector = new THREE.Vector3(pointer.x, pointer.y, 0.5);
   vector.unproject(camera);
 
   const coord = vector.sub(camera.position).normalize();
@@ -54,5 +42,3 @@ const randomizePosition = ({ mouse, camera }: any) => {
 
   return [X / base, Y / base, 2];
 }
-
-export { useKeyEvent }

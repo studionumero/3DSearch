@@ -1,46 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import * as CANNON from "cannon";
 import * as THREE from "three";
-import { useState, FC } from "react";
+import { useState } from "react";
 import { useDrag } from "@use-gesture/react";
 import { useThree, useFrame, extend } from "@react-three/fiber";
 import { FontLoader } from "three/examples/jsm/loaders/FontLoader";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry";
 // context
-import { useCannon } from "../context/CannonContext";
+import { useCannon } from "../../context/CannonContext";
 // fonts
-import Roboto from "../fonts/Roboto.json";
-import ComicNeue from "../fonts/ComicNeue.json";
-import Newsreader from "../fonts/Newsreader.json";
-import PressStart2P from "../fonts/PressStart2P.json";
-import Audiowide from "../fonts/Audiowide.json";
-// interfaces
-import { DefaultValuesInterface } from "../interfaces/Settings";
+import Roboto from "../../Roboto.json"
+import { useStore } from "../hooks/useStore";
 
-type Props = DefaultValuesInterface & { initialPosition: number[], letter: string }
+export const Text = ({ initialPosition, letter }) => {
+  const { fontSize, thickness, bevel, bevelSize, color } = useStore();
 
-const Text: FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, bevelSize, letter, color }) => {
   const { size, viewport } = useThree();
   const [position, setPosition] = useState(initialPosition);
   const [quaternion, setQuaternion] = useState([0, 0, 0, 0]);
   const aspect = size.width / viewport.width;
 
-  const fontCheck = () => {
-    if (type === "Roboto") {
-      return Roboto;
-    } else if (type === "Press Start") {
-      return PressStart2P;
-    } else if (type === "Audiowide") {
-      return Audiowide;
-    } else if (type === "ComicNeue") {
-      return ComicNeue;
-    } else if (type === "Newsreader") {
-      return Newsreader;
-    }
-  }
 
-  const font = new FontLoader().parse(fontCheck());
+  const font = new FontLoader().parse(Roboto);
   const textOptions = {
     font,
     size: fontSize,
@@ -131,5 +111,3 @@ const Text: FC<Props> = ({ initialPosition, type, fontSize, thickness, bevel, be
     </mesh>
   );
 }
-
-export default Text
