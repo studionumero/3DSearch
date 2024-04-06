@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 // three
 import * as THREE from "three";
-import { Text } from "../three/Text";
+import { Character } from "../three/Character";
 
 export const useKeyEvent = ({ e, characters, updateCharacters, pointer, camera }) => {
   switch (true) {
@@ -10,7 +10,7 @@ export const useKeyEvent = ({ e, characters, updateCharacters, pointer, camera }
       const letter = e.key.toUpperCase();
       updateCharacters([
         ...characters,
-        <Text
+        <Character
           key={nanoid()}
           letter={letter}
           initialPosition={randomizePosition({ pointer, camera })}

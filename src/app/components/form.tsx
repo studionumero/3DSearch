@@ -1,5 +1,6 @@
 import { useKeyEvent } from "../hooks/useKeyEvent";
 import { useStore } from "../hooks/useStore";
+import { X, Search } from "lucide-react";
 
 export const Form = ({ pointer, camera }) => {
   const { characters, updateCharacters, query, resetSearch } = useStore();
@@ -11,7 +12,7 @@ export const Form = ({ pointer, camera }) => {
       action="https://www.google.com/search"
     >
       <div className="flex flex-row rounded-sm w-full h-12 bg-white px-3.5 py-1 items-center">
-        <InputIcon icon="search" fontSize="22px" />
+        <Search />
         <input
           type="search"
           className="form-control
@@ -36,28 +37,18 @@ export const Form = ({ pointer, camera }) => {
         />
         <Button
           reset={resetSearch}
-          objects={characters}
-          search={query}
+          characters={characters}
+          query={query}
         />
       </div>
     </form>
   )
 }
 
-
-const InputIcon = (props: { fontSize: string; icon: string }) => (
-  <span
-    className="material-symbols-sharp"
-    style={{ color: "#84AFBA", fontSize: props.fontSize }}
-  >
-    {props.icon}
-  </span>
-);
-
-const Button = ({ search, objects, reset }) => {
+const Button = ({ query, characters, reset }) => {
   switch (true) {
-    case search.length !== 0:
-    case objects.length !== 0:
+    case query.length !== 0:
+    case characters.length !== 0:
       return (
         <button
           onClick={reset}
@@ -65,7 +56,7 @@ const Button = ({ search, objects, reset }) => {
           aria-label="clear"
           style={{ height: "24px" }}
         >
-          <InputIcon icon="close" fontSize="24px" />
+          <X />
         </button>
       );
     default:
