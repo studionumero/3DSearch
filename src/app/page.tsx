@@ -1,7 +1,7 @@
 "use client"
 
 import { Canvas, useThree } from "@react-three/fiber";
-import { Box, Html as HTML } from "@react-three/drei";
+import { Box } from "@react-three/drei";
 import { useStore } from "./hooks/useStore";
 import { Suspense } from "react";
 import { Physics, RigidBody } from "@react-three/rapier";
@@ -11,63 +11,69 @@ import { Form } from "./components/form";
 
 export default function Home() {
   return (
-    <Canvas
-      shadows
-      dpr={[2, 1]}
-      camera={{ position: [0, 0, 10], fov: 45 }}
-    >
-      <Suspense>
-        <Physics>
-          <Search />
-          <Light />
-          <Characters />
-          <Plane />
-        </Physics>
-      </Suspense>
-    </Canvas>
+    <main>
+      <Search />
+      <Canvas
+        shadows
+        dpr={[2, 1]}
+        camera={{ position: [0, 0, 10], fov: 45 }}
+        style={{ position: "absolute" }}
+        className="z-0"
+      >
+        <Light />
+        <Suspense>
+          <Physics gravity={[0, 0, -9.81]} timeStep="vary">
+            <Characters />
+            <Plane />
+          </Physics>
+        </Suspense>
+      </Canvas>
+    </main>
   )
 }
 
 const Search = () => {
-  const { pointer, camera } = useThree();
-
   return (
-    <HTML center style={{ width: "100vw", height: "100vh" }}>
-      <main className="flex flex-col 
+    <div className="absolute h-screen w-screen z-10">
+      <div className="flex flex-col 
         w-[300px] sm:w-[400px] md:w-[526px] h-full 
         p-2 mx-auto mt-[-60px]
         justify-center align-center"
       >
         <Logo />
-        <Form pointer={pointer} camera={camera} />
-      </main>
-    </HTML>
+        <Form />
+      </div>
+    </div>
   )
 }
 
 const Characters = () => {
-  const { characters } = useStore();
+  const { characters, query } = useStore();
+  console.log("characters : ", characters, "query : ", query);
   return <>{characters}</>;
 }
 
 const Plane = () => {
+  const viewport = useThree(state => state.viewport)
+
   return (
-    <RigidBody>
-      <Box args={[1000, 1000, 1000]} />
+    <RigidBody position={[0, 0, 0]} lockTranslations={true} lockRotations={true} name="plane">
+      <Box scale={[viewport.width, viewport.height, 1]} />
     </RigidBody>
   )
 }
 
 const Light = () => {
-  const { brightness, bg, color }: any = useStore();
+  const intensity = 2.4;
+
   return (
     <>
-      <ambientLight intensity={brightness / 2} />
+      <ambientLight intensity={intensity / 2} />
       <hemisphereLight
-        intensity={brightness / 2}
+        intensity={intensity / 2}
         position={[0, 30, 15]}
-        color={bg}
-        groundColor={color}
+        color="#6E9BA6"
+        groundColor="#f08080"
       />
       <directionalLight
         position={[0, 5, 15]}
@@ -79,7 +85,7 @@ const Light = () => {
         shadow-camera-right={15}
         shadow-camera-top={10}
         shadow-camera-bottom={-10}
-        intensity={brightness}
+        intensity={intensity}
       />
     </>
   )

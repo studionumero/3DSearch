@@ -8,7 +8,7 @@ export default function Logo() {
       mr-[20px] sm:mr-[20px] md:mr-[45px] 
       text-[36px] sm:text-[48px] md:text-[64px] 
       sm:leading-[58px] md:leading-[83px] 
-      font-mono text-center uppercase font-semibold tracking-normal 
+      text-center uppercase font-semibold tracking-normal 
       mb-4 select-none"
     >
       <Image
